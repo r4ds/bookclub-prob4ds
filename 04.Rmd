@@ -1,4 +1,4 @@
-# Mathematical Background
+# Continuous Random Variables
 
 **Learning objectives:**
 

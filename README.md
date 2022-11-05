@@ -1,22 +1,18 @@
-# R4DS BOOKNAME Book Club
-
-FIND/REPLACE BOOKABBR, BOOKNAME, BOOKURL, BOOKAUTHORS, BOOKPUBLISHER, BOOKCOPYRIGHT, BOOKISBN, BOOKDOI, BOOKDAYS, BOOKTIMECST, BOOKCHANNELID, SIGNUPSHEETURL, TIMEANDDATEURL, STARTDATE, and PLAYLISTLINK THEN DELETE THIS SENTENCE.
+# R4DS Introduction to Probability for Data Science Book Club
 
 ALSO CONFIRM THE MEETING TIME INFO BELOW AND DELETE THIS SENTENCE.
 
-ALSO ADD PLACEHOLDERS FOR ALL CHAPTERS BY COPYING 01.Rmd (IDEALLY ALSO UPDATE TITLES WITHIN THE FILES), THEN DELETE THIS SENTENCE.
+Welcome to the R4DS Introduction to Probability for Data Science Book Club!
 
-Welcome to the R4DS BOOKNAME Book Club!
-
-We are working together to read [_BOOKNAME_](BOOKURL) by BOOKAUTHORS (BOOKPUBLISHER, copyright BOOKCOPYRIGHT, [BOOKISBN](BOOKDOI)).
-Join the [#book_club-BOOKABBR](https://rfordatascience.slack.com/archives/BOOKCHANNELID) channel on the [R4DS Slack](https://r4ds.io/join) to participate.
-As we read, we are producing [notes about the book](https://r4ds.io/BOOKABBR).
+We are working together to read [_Introduction to Probability for Data Science_](https://probability4datascience.com/) by Stanley H. Chan (Michigan Publishing, copyright 2021, [978-1-60785-746-4](https://www.amazon.com/Introduction-Probability-Data-Science-Stanley/dp/1607857464/)).
+Join the [#book_club-prob4ds](https://rfordatascience.slack.com/archives/C049N9E33DH) channel on the [R4DS Slack](https://r4ds.io/join) to participate.
+As we read, we are producing [notes about the book](https://r4ds.io/prob4ds).
 
 ## Meeting Schedule
 
-If you would like to present, please see the sign-up sheet for your cohort (linked below, and pinned in the [#book_club-BOOKABBR](https://rfordatascience.slack.com/archives/BOOKCHANNELID) channel on Slack)!
+If you would like to present, please see the sign-up sheet for your cohort (linked below, and pinned in the [#book_club-prob4ds](https://rfordatascience.slack.com/archives/C049N9E33DH) channel on Slack)!
 
-- [Cohort 1](SIGNUPSHEETURL) (started STARTDATE): [BOOKDAYS, BOOKTIMECST CST/CDT](TIMEANDDATEURL) | [meeting videos](PLAYLISTLINK)
+- [Cohort 1](https://docs.google.com/spreadsheets/d/1NvIEzK5wpdzIJamoqMuw3ku_sosdXRRwYWmR9EJbSKc/edit?usp=sharing) (started STARTDATE): [BOOKDAYS, BOOKTIMECST CST/CDT](TIMEANDDATEURL) | [meeting videos](https://www.youtube.com/playlist?list=PL3x6DOfs2NGjY32EzPm1jd3s9xaRDWlM2)
 
 <hr>
 
@@ -34,7 +30,7 @@ Do these steps once:
   - `usethis::edit_r_profile()` to open your profile for editing.
   - Add this line: `options(usethis.destdir = "YOURDIR")` (replace `YOURDIR` with the root directory under which you want your R projects to appear; or you can skip these steps, and the project will be saved to your Desktop).
   - Restart your R session (Session/Restart R in Rstudio).
-4. `usethis::create_from_github("r4ds/bookclub-BOOKABBR")` (cleanly creates your own copy of this repository).
+4. `usethis::create_from_github("r4ds/bookclub-prob4ds")` (cleanly creates your own copy of this repository).
 
 Do these steps each time you present another chapter:
 
@@ -50,4 +46,4 @@ Do these steps each time you present another chapter:
 10. When your PR has been accepted ("merged"), `usethis::pr_finish()` to close out your branch and prepare your local repository for future work.
 11. Now that your local copy is up-to-date with the main repo, you need to update your remote fork. Run `gert::git_push("origin")` or click the `Push` button on the `Git` tab of Rstudio.
 
-When your PR is checked into the main branch, the bookdown site will rebuild, adding your slides to [this site](https://r4ds.io/BOOKABBR).
+When your PR is checked into the main branch, the bookdown site will rebuild, adding your slides to [this site](https://r4ds.io/prob4ds).

@@ -1,4 +1,4 @@
-# Mathematical Background
+# Discrete Random Variables
 
 **Learning objectives:**
 
