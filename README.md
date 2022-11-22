@@ -1,7 +1,5 @@
 # R4DS Introduction to Probability for Data Science Book Club
 
-ALSO CONFIRM THE MEETING TIME INFO BELOW AND DELETE THIS SENTENCE.
-
 Welcome to the R4DS Introduction to Probability for Data Science Book Club!
 
 We are working together to read [_Introduction to Probability for Data Science_](https://probability4datascience.com/) by Stanley H. Chan (Michigan Publishing, copyright 2021, [978-1-60785-746-4](https://www.amazon.com/Introduction-Probability-Data-Science-Stanley/dp/1607857464/)).
@@ -12,7 +10,7 @@ As we read, we are producing [notes about the book](https://r4ds.io/prob4ds).
 
 If you would like to present, please see the sign-up sheet for your cohort (linked below, and pinned in the [#book_club-prob4ds](https://rfordatascience.slack.com/archives/C049N9E33DH) channel on Slack)!
 
-- [Cohort 1](https://docs.google.com/spreadsheets/d/1NvIEzK5wpdzIJamoqMuw3ku_sosdXRRwYWmR9EJbSKc/edit?usp=sharing) (started STARTDATE): [BOOKDAYS, BOOKTIMECST CST/CDT](TIMEANDDATEURL) | [meeting videos](https://www.youtube.com/playlist?list=PL3x6DOfs2NGjY32EzPm1jd3s9xaRDWlM2)
+- [Cohort 1](https://docs.google.com/spreadsheets/d/1NvIEzK5wpdzIJamoqMuw3ku_sosdXRRwYWmR9EJbSKc/edit?usp=sharing) (started 2022-11-30): [Wednesdays, 11:00 CST/CDT](https://www.timeanddate.com/worldclock/converter.html?iso=20221130T170000&p1=24&p2=1440) | [meeting videos](https://www.youtube.com/playlist?list=PL3x6DOfs2NGjY32EzPm1jd3s9xaRDWlM2)
 
 <hr>
 
@@ -24,13 +22,8 @@ To present, follow these instructions:
 
 Do these steps once:
 
-1. [Setup Github Locally](https://www.youtube.com/watch?v=hNUNPkoledI) (also see [_Happy Git and GitHub for the useR_](https://happygitwithr.com/github-acct.html))
-2. Install {usethis} and {devtools} `install.packages(c("usethis", "devtools"))`
-3. Set up a default {usethis} directory:
-  - `usethis::edit_r_profile()` to open your profile for editing.
-  - Add this line: `options(usethis.destdir = "YOURDIR")` (replace `YOURDIR` with the root directory under which you want your R projects to appear; or you can skip these steps, and the project will be saved to your Desktop).
-  - Restart your R session (Session/Restart R in Rstudio).
-4. `usethis::create_from_github("r4ds/bookclub-prob4ds")` (cleanly creates your own copy of this repository).
+1. [Setup Git and GitHub to work with RStudio](https://github.com/r4ds/bookclub-setup) (click through for detailed, step-by-step instructions; I recommend checking this out even if you're pretty sure you're all set).
+2. `usethis::create_from_github("r4ds/bookclub-prob4ds")` (cleanly creates your own copy of this repository).
 
 Do these steps each time you present another chapter:
 
