@@ -1,4 +1,4 @@
---- 
+---
 title: "Introduction to Probability for Data Science Book Club"
 author: "The R4DS Online Learning Community"
 date: "`r Sys.Date()`"
@@ -13,10 +13,9 @@ description: "This is the product of the R4DS Online Learning Community's Introd
 
 # Welcome {-}
 
-Welcome to the bookclub! 
+Welcome to the bookclub!
 
-This is a companion for the book [_Introduction to Probability for Data Science_](https://probability4datascience.com/) by Stanley H. Chan (Michigan Publishing, copyright 2021, [978-1-60785-746-4](https://www.amazon.com/Introduction-Probability-Data-Science-Stanley/dp/1607857464/)).
-This companion is available at [r4ds.io/prob4ds](https://r4ds.io/prob4ds).
+This is a companion for the book [*Introduction to Probability for Data Science*](https://probability4datascience.com/) by Stanley H. Chan (Michigan Publishing, copyright 2021, [978-1-60785-746-4](https://www.amazon.com/Introduction-Probability-Data-Science-Stanley/dp/1607857464/)). This companion is available at [r4ds.io/prob4ds](https://r4ds.io/prob4ds).
 
 This website is being developed by the [R4DS Online Learning Community](https://rfordatasci.com). Follow along, and [join the community](https://r4ds.io/join) to participate.
 
@@ -24,14 +23,23 @@ This companion follows the [R4DS Online Learning Community Code of Conduct](http
 
 ## Book club meetings {-}
 
-- Each week, a volunteer will present a chapter from the book (or part of a chapter).
-  - **This is the best way to learn the material.**
-- Presentations will usually consist of a review of the material, a discussion, and/or a demonstration of the principles presented in that chapter.
-- More information about how to present is available in the [github repo](https://github.com/r4ds/bookclub-prob4ds).
-- Presentations will be recorded, and will be available on the [R4DS Online Learning Community YouTube Channel](https://r4ds.io/youtube).
+-   Each week, a volunteer will present a chapter from the book (or part of a chapter).
+    -   **This is the best way to learn the material.**
+-   Presentations will usually consist of a review of the material, a discussion, and/or a demonstration of the principles presented in that chapter.
+-   More information about how to present is available in the [github repo](https://github.com/r4ds/bookclub-prob4ds).
+-   Presentations will be recorded, and will be available on the [R4DS Online Learning Community YouTube Channel](https://r4ds.io/youtube).
 
 ## Pace {-}
 
-- We'll probably take 2 weeks per chapter, but...
-- ...It's ok to split chapters when they feel like too much.
-- We will try to meet every week, but will likely take some breaks for holidays, etc.
+-   We'll probably take 2 weeks per chapter, but...
+    -   ...It's ok to split chapters when they feel like too much...
+    -   ...Or to combine them if they're short.
+-   We will try to meet every week, but will take some breaks for holidays, etc.
+
+## Resources {-}
+
+The [book website](https://probability4datascience.com/) is useful!
+
+-   Lecture videos from 2020 (very complete) & 2022 (in progress)
+-   Video solutions to selected exercises
+-   Code (imperfect but can be a good start)
