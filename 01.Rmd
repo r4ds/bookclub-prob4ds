@@ -1,17 +1,262 @@
 # Mathematical Background
 
+```{r setup, include = FALSE}
+library(tidyverse)
+ggplot2::theme_set(ggplot2::theme_light())
+```
+
+"Review" things I haven't seen formalized in >20 years.
+
 **Learning objectives:**
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+-   Calculate **sums** of **geometric sequences.**
+-   calculate **sums** of **binomial series.**
+-   Use **Taylor approximation** to estimate the value of a function near a certain point.
+-   Calculate **integrals of odd and even functions.**
+-   Use the **fundamental theorem of calculus** and the **chain rule** to solve problems.
+-   Use **linear algebra** to **compare vectors.**
+    -   Calculate the **inner product** of two vectors.
+    -   Calculate the **norm** of a vector.
+    -   Calculate the **cosine angle** between two vectors.
+    -   Calculate the **weighted norm** between two vectors.
+-   Use **matrix calculus** to solve problems.
+-   Calculate **permutations** of items.
+-   Calculate **combinations** of items.
 
-## SLIDE 1
+## Infinite Series: Warmup 1 {-}
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+```{r 01.01-warmup01}
+flip_data <- tibble(
+  n = 1:10,
+  probability = (1/2)^n
+)
 
-## Meeting Videos
+flip_data %>% 
+  ggplot() +
+  aes(x = n, y = probability) +
+  geom_col() +
+  scale_x_continuous(breaks = 1:10)
+```
 
-### Cohort 1
+## Infinite Series: Warmup 2 {-}
+
+```{r 01.01-warmup02}
+flip_data %>% 
+  mutate(cumulative_probability = cumsum(probability)) %>% 
+  ggplot() +
+  aes(x = n, y = cumulative_probability) +
+  geom_col() +
+  geom_hline(yintercept = 0.9) +
+  scale_x_continuous(breaks = 1:10)
+```
+
+## Geometric Series {-}
+
+Sum of a finite geometric series:
+$$\sum_{k=0}^{n}{r^k}=1+r+r^2+\dots+r^n=\frac{1-r^{n+1}}{1-r}$$
+
+Sum of an infinite geometric series (0 < r < 1):
+$$\sum_{k=0}^{\infty}{r^k}=1+r+r^2+\dots=\frac{1}{1-r}$$
+
+Example:
+$$
+\begin{aligned}
+ \sum_{k=2}^{\infty}{\frac{1}{2^k}}&=\frac{1}{4}+\frac{1}{8}+\dots \\
+ &=\frac{1}{4}\left(1+\frac{1}{2}+\frac{1}{4}+\dots\right) \\
+ &=\frac{1}{4}\left(\sum_{k=0}^{\infty}{\left(\frac{1}{2}\right)^k}\right) \\
+ &=\frac{1}{4}\cdot\frac{1}{1-\frac{1}{2}}=\frac{1}{2}
+\end{aligned}
+$$
+
+## Binomial Series {-}
+
+"n choose k":
+$${n \choose k}=\frac{n!}{k!(n-k)!}$$
+
+Binomial theorem:
+$$(a+b)^n=\sum_{k-0}^n{{n \choose k}a^{n-k}b^k}$$
+
+Pascal's identity:
+$${n \choose k}+{n \choose k-1}={n+1 \choose k}$$
+
+## Binomial Series: Code {-}
+
+`choose()` and `factorial()` are functions in R
+
+```{r 01-binomial}
+n <- 10
+k <- 2
+choose(n, k)
+factorial(k)
+```
+
+
+## Taylor Approximation {-}
+
+Approximate a function at a value *a*
+
+$$
+\begin{aligned}
+f(x)&=f(a)+f'(a)(x-a)+\frac{f''(a)}{2!}(x-a)^2+\dots \\
+&=\sum_{n=0}^\infty{\frac{f^{(n)}(a)}{n!}(x-a)^n}
+\end{aligned}
+$$
+So??
+
+Use it to simplify a function near a value (by not going to infinity).
+
+## Taylor Approximation: Example {-}
+
+What is $\sin{x}$ near 0?
+
+$$
+\begin{aligned}
+f(x)&=\sin{x} \\
+f(x)&\approx f(0)+f'(0)(x-0)+\frac{f''(0)}{2!}(x-0)^2+\frac{f'''(0)}{3!}(x-0)^3 \\
+&=\sin{0}+(\cos(0))(x-0)-\frac{\sin{0}}{2!}(x-0)^2-\frac{\cos(0)}{3!}(x-0)^3 \\
+&=0+x-0-\frac{x^3}{6} \\
+&=x-\frac{x^3}{6}
+\end{aligned}
+$$
+Expand to higher orders:
+$$f(x)=x-\frac{x^3}{3!}+\frac{x^5}{5!}-\frac{x^7}{7!}+\dots$$
+
+## Exponential Series {-}
+
+$$e^x=1+x+\frac{x^2}{2}+\frac{x^3}{3}+\dots=\sum_{k=0}^{\infty}{\frac{x^k}{k!}}$$
+
+Evaluate $\sum_{k=0}^{\infty}{\frac{\lambda^ke^{-\lambda}}{k!}}$
+
+$$
+\begin{aligned}
+\sum_{k=0}^{\infty}{\frac{\lambda^ke^{-\lambda}}{k!}}&=e^{-\lambda}\sum_{k=0}^{\infty}{\frac{\lambda^k}{k!}} \\
+&=e^{-\lambda}(e^\lambda) \\
+&=e^{-\lambda+\lambda} \\
+&=e^0 \\
+&=1
+\end{aligned}
+$$
+
+## Integration {-}
+
+-   A function is **even** if $f(x)=f(-x)$
+    -   Flips across y
+-   A function is **odd** if $f(x)=-f(-x)$
+    -   Flips across x and y
+-   Definite integral from $-a$ to $a$ for **even** functions is double the definite integral from $0$ to $a$.
+-   Definite integral from $-a$ to $a$ for **odd** functions is $0$.
+
+
+## Fundamental Theorem of Calculus {-}
+
+Derivation is the opposite of integration.
+
+$$f(x)=\frac{d}{dx}\int_a^x{f(t)dt}$$
+Often used with the chain rule:
+$$\frac{d}{dx}\int_a^{f(x)}{f(t)dt}=g'(x)\cdot f(g(x))$$
+
+For now I'm assuming this will be clear enough in exercises.
+
+
+## Linear Algebra {-}
+
+**Inner Product**
+
+-   $x^Ty$
+-   `t(x) %*% y`
+
+**Norm**
+
+-   $||x||$
+-   `norm(x, type = "2")`
+    -   See help for other types
+
+**Cosine Angle**
+
+-   $\cos{\theta}=\frac{x^Ty}{||x||_2||y||_2}$
+-   `(t(x) %*% y)/(norm(x, "2")*norm(y, "2"))`
+
+## Linear Algebra Example {-}
+
+```{r 01-linear}
+inner <- \(x, y) t(x) %*% y
+cosang <- \(x, y) (t(x) %*% y)/(norm(x, "2")*norm(y, "2"))
+
+set.seed(1234)
+x1 <- runif(100, -1, 1)/100
+x2 <- runif(100, -1, 1)/100
+x3 <- 2 * x1 - pi / 1000
+
+inner(x1, x2)
+inner(x1, x3)
+
+cosang(x1, x2)
+cosang(x1, x3)
+```
+
+
+## Weighted Norms {-}
+
+-   $||x||^2_W$
+-   `t(x) %*% (W %x% x)` (W is a weight matrix)
+
+```{r 01-linear-weighted_norm}
+W <- matrix(1:9, ncol = 3, nrow = 3)
+W
+
+x <- c(2, -1, 1)
+
+W %*% x
+
+z <- t(x) %*% (W %*% x)
+z
+```
+
+
+## Matrix Calculus {-}
+
+**Matrix Inverse**
+
+-   $(X^TX)^{-1}$
+
+```{r 01-matrix_calc-inverse}
+X <- matrix(c(1, -2, 0, 3, 7, 1), nrow = 3, ncol = 2)
+XtX <- t(X) %*% X
+XtXinv <- solve(XtX)
+XtXinv
+```
+
+**System of Linear Equations**
+
+-   $\beta=(X^TX)^{-1}X^Ty$
+
+```{r label, options}
+y <- c(2,1,0)
+beta <- solve(qr(X), y)
+beta
+```
+
+
+## Combinatronics {-}
+
+It's easier in R if we look at these backwards.
+
+**Combinations**
+
+-   Order doesn't matter, so (1, 2) == (2, 1)
+-   $\frac{n!}{k!(n-k)!}={n \choose k}$
+-   `choose(n, k)`
+-   `combn(x, m)` to generate matrix of combinations
+
+**Permutations**
+
+-   Cares about order (so there are more)
+-   $\frac{n!}{(n-k)!}={n \choose k}\cdot k!$
+-   `choose(n, k) * factorial(k)`
+
+## Meeting Videos {-}
+
+**Cohort 1**
 
 `r knitr::include_url("https://www.youtube.com/embed/URL")`
 
