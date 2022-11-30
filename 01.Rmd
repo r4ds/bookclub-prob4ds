@@ -74,7 +74,7 @@ $$
 $${n \choose k}=\frac{n!}{k!(n-k)!}$$
 
 Binomial theorem:
-$$(a+b)^n=\sum_{k-0}^n{{n \choose k}a^{n-k}b^k}$$
+$$(a+b)^n=\sum_{k=0}^n{{n \choose k}a^{n-k}b^k}$$
 
 Pascal's identity:
 $${n \choose k}+{n \choose k-1}={n+1 \choose k}$$
@@ -231,7 +231,7 @@ XtXinv
 -   $\beta=(X^TX)^{-1}X^Ty$
 
 ```{r label, options}
-y <- c(2,1,0)
+y <- c(2, 1, 0)
 beta <- solve(qr(X), y)
 beta
 ```
@@ -253,6 +253,7 @@ It's easier in R if we look at these backwards.
 -   Cares about order (so there are more)
 -   $\frac{n!}{(n-k)!}={n \choose k}\cdot k!$
 -   `choose(n, k) * factorial(k)`
+-   `prod(n - (0:(k - 1)))` = more efficient
 
 ## Meeting Videos {-}
 
