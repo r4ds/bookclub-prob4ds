@@ -151,9 +151,9 @@ $$
 
 Derivation is the opposite of integration.
 
-$$f(x)=\frac{d}{dx}\int_a^{g(x)}{f(t)dt}$$
+$$f(x)=\frac{d}{dx}\int_a^{x}{f(t)dt}$$
 Often used with the chain rule:
-$$\frac{d}{dx}\int_a^{f(x)}{f(t)dt}=g'(x)\cdot f(g(x))$$
+$$\frac{d}{dx}\int_a^{g(x)}{f(t)dt}=g'(x)\cdot f(g(x))$$
 
 For now I'm assuming this will be clear enough in exercises.
 
