@@ -257,7 +257,42 @@ It's easier in R if we look at these backwards.
 
 ## Meeting Videos {-}
 
-**Cohort 1**
+### Cohort 1 {-}
+
+#### Chapter Overview {-}
+
+`r knitr::include_url("https://www.youtube.com/embed/Xr6-2H6x_h8")`
+
+<details>
+<summary> Meeting chat log </summary>
+
+```
+00:07:45	LUCIO ENRIQUE CORNEJO RAMÍREZ:	helloo everyone
+00:11:11	Jon Harmon (jonthegeek):	r4ds.io/prob4ds
+00:47:17	Jon Harmon (jonthegeek):	[main 11:35:44] > X <- matrix(c(1, -2, 0, 3, 7, 1), nrow = 3, ncol = 2)
+[main 11:39:48] > qr(X)
+$qr
+           [,1]       [,2]
+[1,] -2.2360680  4.9193496
+[2,] -0.8944272 -5.8991525
+[3,]  0.0000000  0.1695159
+
+$rank
+[1] 2
+
+$qraux
+[1] 1.447214 1.985527
+
+$pivot
+[1] 1 2
+
+attr(,"class")
+[1] "qr"
+00:53:20	Ronald Legere:	prod( (n-(0:(k-1))).  Will give permutations
+```
+</details>
+
+#### Exercises {-}
 
 `r knitr::include_url("https://www.youtube.com/embed/URL")`
 

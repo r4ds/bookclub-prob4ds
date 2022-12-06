@@ -2,23 +2,37 @@
 
 **Learning objectives:**
 
--   THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+-   JON WILL TRY TO FILL THESE IN.
 
-## SLIDE 1
+## SLIDE 1 {-}
 
 -   ADD SLIDES AS SECTIONS (`##`).
 -   TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
 
-## Meeting Videos
+## Meeting Videos {-}
 
-### Cohort 1
+### Cohort 1 {-}
+
+#### Chapter Overview {-}
 
 `r knitr::include_url("https://www.youtube.com/embed/URL")`
 
 <details>
+<summary> Meeting chat log </summary>
 
-<summary>Meeting chat log</summary>
+```
+LOG
+```
+</details>
 
-    LOG
+#### Exercises {-}
 
+`r knitr::include_url("https://www.youtube.com/embed/URL")`
+
+<details>
+<summary> Meeting chat log </summary>
+
+```
+LOG
+```
 </details>
