@@ -117,7 +117,7 @@ Three elements constitute a probability space $(\Omega, \mathcal{F}, \mathbb{P})
    
    2. $\mathcal{F}$, the *event space*,   $E \subseteq \Omega$
    
-   3. $\mathbb{P}$ , the probability law, mapping from an event E to number $\mathbb{P}[E]$ that satisfies the *axioms* of probability.
+   3. $\mathbb{P}$ , the probability law, a *measure* mapping from an event E to number $\mathbb{P}[E]$ that satisfies the *axioms* of probability.
 
 `r knitr::include_graphics("images/prob_model.jpg")`
 
