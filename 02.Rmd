@@ -13,11 +13,129 @@ Understand the *slogan*:
 - Learn conditional probability
 
 
-## Introduction {-}
+## Motivating example {-}
 
->Probability is a measure of the size of a set
+`r knitr::include_graphics("images/prob_measure_set.jpg")`
+
+Roll 1 a die, what is the probability of getting a number < 4 and even?
+
+- Set of possible results is {1,2,3,4,5,6} is the *sample space*
+
+- Two events of interest, as sets: 
+
+    $E_1 = \{1,2,3\}$ ('less then 4') 
+    
+    $E_2 = \{2,4,6\}$ ('even') 
+    
+- Combined, even *and* less then 5 is the *intersection* of E1 and E2:
+
+    $E = E_1 \cap  E_2 = \{2\}$
+
+- The probability is the *measure* of E relative to the the sample space, here $1/6$ since the measure here is just a *counter*.
 
 
+## Set Theory
+
+- A set is a collection of elements ($\{\xi_1, \xi_2, ..., \xi_n\}$)
+
+- Elements can be anything... apples, real numbers, functions, sets!
+
+- B is a *subset* of A, denoted $B \subseteq A$ if every member of B is also a member of A. 
+
+```{r}
+A <- c(1,2,3,4,5,6)
+B <- c(2,4,6)
+all(B %in% A)
+all(A %in% B)
+```
+
+## $\Omega$ and $\emptyset$ {-}
+
+- A set with no elements: $\emptyset$
+
+- The universal set ($\Omega$) is the set containing all elements under consideration. 
+
+  - Relative concept! 
+  
+  - For probability theory, this will be the *sample space*
+
+## Set Operations {-}
+
+Union: $A \cup B = \{\xi \mid \xi \in A \text{ or } \xi \in B\}$
+
+Intersection $A \cap B = \{\xi \mid \xi \in A \text{ and } \xi \in B\}$
+ 
+Complement: $A^c = \{\xi \mid \xi \in \Omega \text{ and } \xi \notin A\} = \Omega \setminus A$
+
+Note the correspondence with logic: and, or, not
+
+Difference:  $A\setminus B = \{\xi \mid \xi \in A \text{ and } \xi \notin B\} = A \cap B^c$ 
+
+```{r}
+A <- c(1,2,3,4,5)
+B <- c(2,4,6)
+union(A,B)
+intersect(A,B)
+setdiff(A,B)
+```
+## Important Properties {-}
+
+- $\cap$ and $cup$ are *commutative* (Order does not matter) and *associative* (move parens around)
+
+- Distribution:
+
+$$
+A \cup (B \cap C) = (A \cup B) \cap (A \cup C)\\
+A \cap (B \cup C) = (A \cap B) \cup (A \cap C)
+$$
+- De Morgan's law:
+
+$$
+(A \cap B)^c = A^c \cup B^c\\
+(A \cup B)^c = A^c \cap B^c
+$$
+
+ 
+## Disjoint and Partition {-}
+
+- Two sets $A$ and $B$ are *disjoint* if $A\cap B = \emptyset$
+
+- A collection of sets $\{A_1,A_2,...,A_n\}$ is a *partition* of $\Omega$ if:
+
+   1. Disjoint: $A_i \cap A_j = \emptyset$
+   2. Decompose:  $\bigcup_{i=1}^n A_i = \Omega$
+
+- This is important because it allows us to decompose $\Omega$ into smaller subsets to analyze separately.
+
+Example  $\{1,3,4\}$, $\{4,5\}$ and $\{6\}$ form a partition of $\{1,2,3,4,5,6\}$
+
+## Probability Space
+
+Three elements constitute a probability space $(\Omega, \mathcal{F}, \mathbb{P})$
+
+   1. $\Omega$, the *sample space*, the set of all possible outcomes.
+   
+   2. $\mathcal{F}$, the *event space*,   $E \subseteq \Omega$
+   
+   3. $\mathbb{P}$ , the probability law, mapping from an event E to number $\mathbb{P}[E]$ that satisfies the *axioms* of probability.
+
+`r knitr::include_graphics("images/prob_model.jpg")`
+
+## Axioms of Probability
+
+## Corollaries {-}
+
+## Kolmogorov {-}
+
+## Conditional Probability
+
+## Independance {-}
+
+## Baye's Theorem and law of total probability {-}
+
+>Note add reference to alternative view
+
+## Monte Hall Problem {-}
 
 ## Meeting Videos {-}
 
