@@ -2,12 +2,22 @@
 
 **Learning objectives:**
 
--   JON WILL TRY TO FILL THESE IN.
+Understand the *slogan*:
 
-## SLIDE 1 {-}
+>Probability is a measure of the size of a set
 
--   ADD SLIDES AS SECTIONS (`##`).
--   TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+- Review basic set theory
+
+- Learn mathematical probability as a measure on sets
+
+- Learn conditional probability
+
+
+## Introduction {-}
+
+>Probability is a measure of the size of a set
+
+
 
 ## Meeting Videos {-}
 
