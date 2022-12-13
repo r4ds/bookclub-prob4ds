@@ -190,9 +190,6 @@ $$
 = \int_a^b f(x) dx + \int_b^c f(x) dx\\
 = \mathbb{P}[E_1] + \mathbb[E_2] 
 $$
-
-$$
-
 ## Corollaries {-}
 Adding non-disjoint events:
 
@@ -222,17 +219,42 @@ $$
 \mathbb{P}[A \mid B ] = \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]}
 $$
 
+`r knitr::include_graphics("images/ch02/cond_prob.jpg")`
+
 >This is a *definition*. There are alternative formulations that take this as foundational instead, see for example E.T. Jaynes "Probability Theory, The Logic of Science"
 
-*Example* - all points equally likely.
+Conditional probabilities obey the axioms and are legitamate probabilities as shown in text.
 
-`r knitr::include_graphics("images/ch02/cond_prob_example.jpg")`
+## Example {-}
 
-$\mathbb{P}[A \mid B ] = \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]} = \frac{2/12}{6/12} = 1/3$ 
- 
-$\mathbb{P}[B \mid A ] = \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[A]} = \frac{2/12}{5/12} = 2/5$ 
+Roll 2 dice, you see one of them is a 2, what is the probability that the total is an Eight?
 
->Note that conditional probabilites obey axioms and are legitate probabilites as shown in text.
+```{r, echo = FALSE}
+dice_table  = dplyr::tibble(die1 = rep(1:6,6),
+                            die2 = cumsum(die1==1), 
+                          pairs = paste('(',die1,',',die2,')')) |> 
+              tidyr::pivot_wider(names_from = die2, values_from = pairs) |>
+              dplyr::select(-die1)
+dice_table
+```
+
+
+
+$$
+\mathbb{P}[8 \mid 2 \text{ on one die}] = \frac{\mathbb{P}[8 \cap 2 \text{on one die}]}{\mathbb{P}[2 \text{ on one die} ]}\\
+= \frac{2/36}{11/36} = 2/11
+$$
+```{r}
+rolls  = 100000
+dice = dplyr::tibble(die1 = sample(1:6, rolls, replace = TRUE),
+                     die2 = sample(1:6, rolls, replace = TRUE),
+                     total = die1 + die2)
+dice |> dplyr::filter(die1 == 2 | die2 == 2) |> 
+       dplyr::summarize(mean(total==8))
+2/11
+```
+
+
 
 ## Independance {-}
 
