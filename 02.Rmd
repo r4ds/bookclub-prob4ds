@@ -332,7 +332,7 @@ monty_1 |>
 
 ```
 
-## Monty Hall Problem: Alternative assumptions
+## Monty Hall Problem: Alternative assumptions {-}
 
 - Evil Monty: He only asks you to switch when he knows you have the prize... in that case never switch.
 
