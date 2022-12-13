@@ -107,6 +107,8 @@ $$
 
 - This is important because it allows us to decompose $\Omega$ into smaller subsets to analyze separately.
 
+`r knitr::include_graphics("images/ch02/partition.jpg")`
+
 Example  $\{1,3,4\}$, $\{4,5\}$ and $\{6\}$ form a partition of $\{1,2,3,4,5,6\}$
 
 ## Probability Space
@@ -150,12 +152,15 @@ $$
 
 - A *probability law* is a function $\mathbb{P}:\mathcal{F} \rightarrow [0,1]$ of an event $E$ to a real number in $[0,1]$
 
-- It is a *measure* of the size of a set.
+- It is a *measure* of the size of a set. (Imagine it as the weight)
 
 `r knitr::include_graphics("images/ch02/ProbLaw.png")`
 
 - Extends naturally to *intervals* $E= [a,b]$ is a subset of $\Omega = [0,1]$ for example and *regions* in higher dimensions.
 
+$$
+\mathbb{P}[E] = \int_a^b f(x) dx \text{ where f(x) is the 'weight' for x.}
+$$
 
 ## Axioms of Probability
 Probability law cannot be arbitrary, it must satisfy the Axioms of Probability:
@@ -198,7 +203,7 @@ The union bound is frequently used for analyzing problems where the intersection
 
 In data science we are often interested in the relationship between two or more events. 
 
-Question: If $A$ has happened, what is the probability that $B$ also happens? 
+Question: If $A$ has happened, what is the probability that $B$ also happens? Are they correlated? 
 
 Definition: Assume  $\mathbb{P}[B] \neq 0$, then the *conditional probability* of $A$ given $B$ is:
 $$
@@ -271,7 +276,7 @@ To make this concrete consider the *Monty Hall Problem* (very similar to the thr
 
 - Three doors, behind one is a prize, behind the other doors there are goats (or some other worthless prize)
 - Contestant picks a door. He has a 1/3 chance of picking the door with the prize. 
-- Monty then opens one of the other doors, revealing a goat. Do you switch? 
+- Monty then opens one of the other doors, always revealing a goat. Do you switch? 
 
 People tend to *not* switch, thinking that they now have a 50-50 shot at it. But on the other hand, you had 1/3 chance of getting the right one at the beginning, why would that change? So you should switch right?  
 
@@ -292,7 +297,7 @@ Note that $\mathbb{P}[D_1|M_3] = \mathbb{P}[D_1]$ and is independent of the door
 
 If you ever have to explain this to someone, have them think about the case with 100 doors, and after you pick a door, Monty opens up 99 goat doors. Seems pretty obvious you should switch at that point!
 
-## Simulation {-}
+## Monty Hall Problem: Simulation {-}
 
 Assume you choose door #1 as above.
 
@@ -316,7 +321,7 @@ monty_1 |>
 
 ```
 
-Alternative assumptions:
+## Monty Hall Problem: Alternative assumptions
 
 - Evil Monty: He only asks you to switch when he knows you have the prize... in that case never switch.
 
@@ -331,7 +336,7 @@ monty_1 <- dplyr::tibble(
 
 # We observe open door is #2 and no prize there: 
 monty_1 |>
-      dplyr::filter(door_monte_chooses == 2 & door_with_prize != 2) |>
+      dplyr::filter(door_monte_opens == 2 & door_with_prize != 2) |>
       dplyr::summarize(mean(door_with_prize == 1))
 
 ```
