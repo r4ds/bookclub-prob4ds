@@ -15,4 +15,5 @@ Imports:
     bookdown,
     dplyr,
     rmarkdown,
+    tidyr,
     tidyverse
