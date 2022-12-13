@@ -23,7 +23,7 @@ Roll a die, what is the probability of getting a number < 4 and even?
 
 - Two events of interest, as sets: 
 
-    $E_1 = \{1,2,3\}$ ('less than 5') 
+    $E_1 = \{1,2,3\}$ ('less than 4') 
     
     $E_2 = \{2,4,6\}$ ('even') 
     
