@@ -180,6 +180,17 @@ Why these three axioms?
 * Axiom II (Normalization) ensures that probability is never greater than 1.
 * Axiom III (Additivity) allows us to add probabilities when two events do not overlap. Natural extension from `naive` probability (`counting`)
 
+**Example**
+
+For the case where $\Omega = [0,1]$ and $\mathbb{P}[E] = \int_a^b f(x) dx$ we require (Axiom I) $f(x) \geq 0$ and (Axiom II) $\mathbb{P}[\Omega] = \int_0^1 f(x) dx =1$.  Axiom III is also satisfied due to the additivity of integration. For example, consider two (non overlapping) intervals $E_1 = [a,b]$ and $E_2 = [b,c]$
+
+$$
+\mathbb{P}[E_1 \cup E_2] = \int_a^c f(x) dx\\
+= \int_a^b f(x) dx + \int_b^c f(x) dx\\
+= \mathbb{P}[E_1] + \mathbb[E_2] 
+$$
+
+$$
 
 ## Corollaries {-}
 Adding non-disjoint events:
