@@ -113,29 +113,186 @@ Example  $\{1,3,4\}$, $\{4,5\}$ and $\{6\}$ form a partition of $\{1,2,3,4,5,6\}
 
 Three elements constitute a probability space $(\Omega, \mathcal{F}, \mathbb{P})$
 
-   1. $\Omega$, the *sample space*, the set of all possible outcomes.
-   
+   1. $\Omega$, the *sample space*, the set of all possible outcomes of an experiment.
+
    2. $\mathcal{F}$, the *event space*,   $E \subseteq \Omega$
    
    3. $\mathbb{P}$ , the probability law, a *measure* mapping from an event E to number $\mathbb{P}[E]$ that satisfies the *axioms* of probability.
 
 `r knitr::include_graphics("images/prob_model.jpg")`
 
+## Sample Space $\Omega$ {-}
+
+- Set of all possible events: Must be exaustive and exclusive
+
+- Examples
+   
+    - Throw a die: $\Omega = \{1,2,3,4,5,6\}$
+    - Flipping 2 coins: $\Omega = \{(H,H),(H,T),(T,H),(T,T)\}$ (Cartesian product)
+    - Phase angle of a Voltage: $\Omega = \{\theta \mid 0 \leq \Theta \leq 2 \pi\}$
+    - Can also be alphabets, functions, vectors, EEG signals, images ... etc.
+       
+## Event space $\mathcal{F}$ {-}
+
+- The event space consists of all possible *combinations* of outcomes (Events $E \subseteq \Omega$).
+
+- Note that an outcome is an *element* of $\Omega$, an Event is a *subset*. Can consist of one or many outcomes.
+
+- For a discrete sample space with $n$ elements, there are $2^n$ Events in $\mathcal{F}$
+
+- Example: Consider an experiment with 3 outcomes $\Omega = \{A, B , C\}$.  Then:
+
+$$
+\mathcal{F} = \{\emptyset, \{A\}, \{B\},\{C\},\{A, B\},\{A, C\},\{B, C\}, \{A,B, C\}\}
+$$
+
+## Probability law $\mathbb{P}$ {-}
+
+- A *probability law* is a function $\mathbb{P}:\mathcal{F} \rightarrow [0,1]$ of an event $E$ to a real number in $[0,1]$
+
+- It is a *measure* of the size of a set.
+
+`r knitr::include_graphics("images/ProbLaw.png")`
+
+- Extends naturally to *intervals* $E= [a,b]$ is a subset of $\Omega = [0,1]$ for example and *regions* in higher dimensions.
+
+
 ## Axioms of Probability
+Probability law cannot be arbitrary, it must satisfy the Axioms of Probability:
+
+   1. Non-negativity: $\mathbb{P}[A] \geq 0 \text{, for any } A \subseteq \Omega$
+   
+   2. Normalization: $\mathbb{P}[\Omega] = 1$
+   
+   3. Additivity: For any disjoint sets $\{A_1, A_2, ...\}$
+$$
+\mathbb{P}\left[\bigcup_{i=1}^{\infty}A_i\right]=\sum_{i=1}^{\infty}\mathbb{P}[A_i]
+$$
+
+Why these three axioms?
+
+* Axiom I (Non-negativity) ensures that probability is never negative.
+* Axiom II (Normalization) ensures that probability is never greater than 1.
+* Axiom III (Additivity) allows us to add probabilities when two events do not overlap.
+
 
 ## Corollaries {-}
+Adding non-disjoint events:
 
-## Kolmogorov {-}
+$$
+\mathbb{P}[A \cup B] = \mathbb{P}[A] +\mathbb{P}[B] - \mathbb{P}[A\cap B]
+$$
+
+`r knitr::include_graphics("images/union.jpg")`
+
+---
+
+Union bound:
+$$
+\mathbb{P}[A \cup B] \leq \mathbb{P}[A] +\mathbb{P}[B]\\ 
+$$
+The union bound is frequently used for analzying problems where the intersection is difficult to evaluate (e.g. multiple hypothesis testing)
+
 
 ## Conditional Probability
 
+In data science ee are often interested in the relationship between two or more events. 
+
+Question: If $A$ has happened, what is the probability that $B$ also happens? 
+
+Definition: Assume  $\mathbb{P}[B] \neq 0$, then the *conditional probability* of $A$ given $B$ is:
+$$
+\mathbb{P}[A \mid B ] = \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]}
+$$
+
+>This is a *definition*. There are alternative formulations that take this as foundational instead, see for example E.T. Jaynes "Probability Theory, The Logic of Science"
+
+*Example* - all points equally likely.
+
+`r knitr::include_graphics("images/cond_prob_example.jpg")`
+
+$\mathbb{P}[A \mid B ] = \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]} = \frac{2/12}{6/12} = 1/3$ 
+ 
+$\mathbb{P}[B \mid A ] = \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[A]} = \frac{2/12}{5/12} = 2/5$ 
+
+>Note that conditional probabilites obey axioms and are legitate probabilites as shown in text.
+
 ## Independance {-}
+
+Two events are *independant* if $\mathbb{P}[A \mid B] = \mathbb{P}[A]$ or $\mathbb{P}[B \mid A] = \mathbb{P}[B]$. 
+
+Using the definition of conditional probability, if $\mathbb{P}[A] \geq 0$ and $\mathbb{P}[B] \geq 0$ this is:
+$$
+\frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]} = \mathbb{P}[A]\\
+\text{or}\\
+\mathbb{P}[A \cap B] =\mathbb{P}[B] \mathbb{P}[A]
+$$
+This last expression is often taken as the definition of *independent* events because it works when probabilities are zero as well.  So probabilities for *independent* events can be multiplied. 
+
+
+
+>Disjoint is not the same as Independant!
+
+*Example*: outcome of two dice rolls: $A=\{\text{1st die is 3}\}$ and $B=  \{\text{2nd die is 4}\}$ .
+
+$\mathbb{P}[A] =\mathbb{P}[B] = 1/6$
+$\mathbb{P}[A \cap B] = \mathbb{P}[(3,4)] = 1/36 = \mathbb{P}[A]\mathbb{P}[B]$
+
+
+`r knitr::include_graphics("images/two_dice.jpg")`
+
 
 ## Baye's Theorem and law of total probability {-}
 
->Note add reference to alternative view
+By re-arranging terms in the definition of $\mathbb{P}[A\mid B]$ and $\mathbb{P}[B \mid A]$ we have *Baye's theorem*:
+$$
+\mathbb{P}[A \mid B] = \frac{\mathbb{P}[B \mid A]\mathbb{P}[A]}{P[B]}
+$$
+This lets us switch $A$ and $B$ in conditional probability statements. 
 
-## Monte Hall Problem {-}
+*Law of Total Probability* lets us *decompose* an event into smaller events: let $\{A_1,A_2,...,A_n\}$ be a partition of $\Omega$. Then for any $B \subseteq \Omega$
+$$
+\mathbb{P}[B] = \sum_{i=1}^{n}\mathbb{P}[B\mid A_i]\mathbb{P}[A_i]
+$$
+Proof is in the book, but the interpretation is that if the sample space can be chopped up into subsets $A_i$, we can compute the probability of $\mathbb{P}[B]$ by summing over its portion in each of the subsets: $\mathbb{P}[B\cap A_i] = \mathbb{P}[B \mid A_i]\mathbb{P}[A_i]$.
+
+This allows us the write one of my favorite equations!
+
+$$
+\mathbb{P}[A_j \mid B] = \frac{\mathbb{P}[B \mid A_j]\mathbb{P}[A_j]}{\sum_{i=1}^{n}\mathbb{P}[B\mid A_i]\mathbb{P}[A_i]}
+$$
+
+In Bayesian statistics,  $\mathbb{P}[A_j \mid B]$ is the *posterior*, $\mathbb{P}[B \mid A_j]$ is the *likelihood*, and $\mathbb{P}[A_j]$ is the *prior*.  The denominator is the normalization factor.
+
+## Example: Monty Hall Problem {-}
+
+`r knitr::include_graphics("images/Monty_open_door.png")`
+
+To make this concrete consider the "Monty Hall Problem* (very similar to the three prisoners problem in the book).
+
+- Three doors, behind one is a prize, behind the other door there are goats (or some other worthless prize)
+- Contestant picks a door. He has a 1/3 chance of picking the door with the prize. 
+- Monty then opens one of the other doors, revealing a goat. Do you switch? 
+
+People tend to *not* switch, thinking that they now have a 50-50 shot at it. But on the other hand, you had 1/3 chance of getting the right one at the beginning, why would that change? So you should switch right?  
+
+Let's model this!  Let $D_1$, $D_2$ and $D_3$ be the events that the prize is behind door 1, 2, and 3. We assume the prize is randomly assigned, so $\mathbb{P}[D_1]=\mathbb{P}[D_3]=\mathbb{P}[D_3]=1/3$.  Let us call the events of Monty Hall opening each door: $M_1$, $M_2$, and $M_3$.  Assume we pick door number 1, and Monty opens door 3 revealing a goat.   Now conditioned on the prize location we can compute the (apriori) probability of Monty opening door 3:
+
+$$
+\mathbb{P}[M_3 \mid D_1] = 1/2 \text{,   }   \mathbb{P}[M_3 \mid D_2] = 1,\text{ and } \mathbb{P}[M_3 \mid D_3] = 0 
+$$
+Now use Baye's rule to compute $\mathbb{P}[D_1|M_3]$:
+$$
+\mathbb{P}[D_1|M_3] = \frac{\mathbb{P}[M_3 \mid D_1]\mathbb{P}[D_1]}{\mathbb{P}[M_3 \mid D_1]\mathbb{P}[D_1] + \mathbb{P}[M_3 \mid D_2]\mathbb{P}[D_2] + \mathbb{P}[M_3 \mid D_3]\mathbb{P}[D_3]} = \frac{1/2*1/3}{1/2*1/3+1/3+0}= 1/3
+$$
+
+
+
+Note that $\mathbb{P}[D_1|M_3] = \mathbb{P}[D_1]$ and is independat of the door opening. So you should switch!  Surprisingly, in a *Mythbusters* episode 20 out of 20 voluneers decided not to switch!
+
+If you ever have to explain this to someone, have them think about the case with 100 doors, and after you pick a door, Monty opens up 99 goat doors. Seems pretty obvious you should switch at that point!
+
+>For more on this probem and the media furor, see: https://en.wikipedia.org/wiki/Monty_Hall_problem.  
 
 ## Meeting Videos {-}
 
