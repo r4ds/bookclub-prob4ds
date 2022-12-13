@@ -6,28 +6,28 @@ Understand the *slogan*:
 
 >Probability is a measure of the size of a set
 
-- Review basic set theory
+- Review basic set theory.
 
-- Learn mathematical probability as a measure on sets
+- Explain mathematical probability as a measure of sets.
 
-- Learn conditional probability
+- Calculate conditional probabilities.
 
 
 ## Motivating example {-}
 
 `r knitr::include_graphics("images/ch02/prob_measure_set.jpg")`
 
-Roll 1 a die, what is the probability of getting a number < 4 and even?
+Roll a die, what is the probability of getting a number < 4 and even?
 
 - Set of possible results is {1,2,3,4,5,6} is the *sample space*
 
 - Two events of interest, as sets: 
 
-    $E_1 = \{1,2,3\}$ ('less then 4') 
+    $E_1 = \{1,2,3\}$ ('less than 5') 
     
     $E_2 = \{2,4,6\}$ ('even') 
     
-- Combined, even *and* less then 5 is the *intersection* of E1 and E2:
+- Combined, even *and* less than 4 is the *intersection* of E1 and E2:
 
     $E = E_1 \cap  E_2 = \{2\}$
 
@@ -126,7 +126,7 @@ Three elements constitute a probability space $(\Omega, \mathcal{F}, \mathbb{P})
 
 ## Sample Space $\Omega$ {-}
 
-- Set of all possible events: Must be exaustive and exclusive
+- Set of all possible events: Must be exhaustive and exclusive
 
 - Examples
    
@@ -190,7 +190,9 @@ $$
 = \int_a^b f(x) dx + \int_b^c f(x) dx\\
 = \mathbb{P}[E_1] + \mathbb[E_2] 
 $$
+
 ## Corollaries {-}
+
 Adding non-disjoint events:
 
 $$
@@ -280,9 +282,9 @@ $\mathbb{P}[A \cap B] = \mathbb{P}[(3,4)] = 1/36 = \mathbb{P}[A]\mathbb{P}[B]$
 
 >Disjoint is not the same as Independant!
 
-## Baye's Theorem and law of total probability {-}
+## Bayes' Theorem and law of total probability {-}
 
-By re-arranging terms in the definition of $\mathbb{P}[A\mid B]$ and $\mathbb{P}[B \mid A]$ we have *Baye's theorem*:
+By re-arranging terms in the definition of $\mathbb{P}[A\mid B]$ and $\mathbb{P}[B \mid A]$ we have *Bayes' theorem*:
 $$
 \mathbb{P}[A \mid B] = \frac{\mathbb{P}[B \mid A]\mathbb{P}[A]}{P[B]}
 $$
@@ -319,7 +321,7 @@ Let's model this!  Let $D_1$, $D_2$ and $D_3$ be the events that the prize is be
 $$
 \mathbb{P}[M_3 \mid D_1] = 1/2 \text{,   }   \mathbb{P}[M_3 \mid D_2] = 1,\text{ and } \mathbb{P}[M_3 \mid D_3] = 0 
 $$
-Now use Baye's rule to compute $\mathbb{P}[D_1|M_3]$:
+Now use Bayes' rule to compute $\mathbb{P}[D_1|M_3]$:
 $$
 \mathbb{P}[D_1|M_3] = \frac{\mathbb{P}[M_3 \mid D_1]\mathbb{P}[D_1]}{\mathbb{P}[M_3 \mid D_1]\mathbb{P}[D_1] + \mathbb{P}[M_3 \mid D_2]\mathbb{P}[D_2] + \mathbb{P}[M_3 \mid D_3]\mathbb{P}[D_3]}\\
 = \frac{1/2*1/3}{1/2*1/3+1/3+0}= 1/3
@@ -338,9 +340,9 @@ Assume you choose door #1 as above.
 ```{r}
 num_samples = 10000
 monty_1 <- dplyr::tibble(
-   door_with_prize = sample(c(1,2,3), num_samples, replace= TRUE),
+   door_with_prize = sample(c(1,2,3), num_samples, replace = TRUE),
    door_monte_opens = dplyr::case_when(
-                          door_with_prize == 1 ~ sample(c(2,3),num_samples, replace = TRUE),
+                          door_with_prize == 1 ~ sample(c(2,3), num_samples, replace = TRUE),
                           door_with_prize == 2 ~ 3,
                           door_with_prize == 3 ~ 2)
 )
@@ -359,20 +361,19 @@ monty_1 |>
 
 - Evil Monty: He only asks you to switch when he knows you have the prize... in that case never switch.
 
-- Ignorant Monty: He *doesn't know* where the prize is! In that case he might open the door with the prize. Using the same methods we used above it can be shown that the probability you have the prize *is* now 0.50 and it doesn't matter if you switch.  Let's sim!
+- Ignorant Monty: He *doesn't know* where the prize is! In that case he might open the door with the prize. Using the same methods we used above it can be shown that the probability you have the prize *is* now 0.50 and it doesn't matter if you switch. Let's sim!
 
 ```{r}
 num_samples = 10000
 monty_1 <- dplyr::tibble(
-   door_with_prize = sample(c(1,2,3), num_samples, replace= TRUE),
-   door_monte_opens = sample(c(2,3),num_samples, replace = TRUE) 
+   door_with_prize = sample(c(1,2,3), num_samples, replace = TRUE),
+   door_monte_opens = sample(c(2,3), num_samples, replace = TRUE) 
 )
 
 # We observe open door is #2 and no prize there: 
 monty_1 |>
-      dplyr::filter(door_monte_opens == 2 & door_with_prize != 2) |>
-      dplyr::summarize(mean(door_with_prize == 1))
-
+   dplyr::filter(door_monte_opens == 2 & door_with_prize != 2) |>
+   dplyr::summarize(mean(door_with_prize == 1))
 ```
 
 
