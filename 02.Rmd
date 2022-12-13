@@ -33,6 +33,7 @@ Roll 1 a die, what is the probability of getting a number < 4 and even?
 
 - The probability is the *measure* of E relative to the the sample space, here $1/6$ since the measure here is just a *counter*.
 
+- Mathematical approach is independant of *interpretation* (Frequentist, Bayesian, others?)
 
 ## Set Theory
 
