@@ -2,12 +2,382 @@
 
 **Learning objectives:**
 
--   JON WILL TRY TO FILL THESE IN.
+Understand the *slogan*:
 
-## SLIDE 1 {-}
+>Probability is a measure of the size of a set
 
--   ADD SLIDES AS SECTIONS (`##`).
--   TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+- Review basic set theory.
+
+- Explain mathematical probability as a measure of sets.
+
+- Calculate conditional probabilities.
+
+
+## Motivating example {-}
+
+`r knitr::include_graphics("images/ch02/prob_measure_set.jpg")`
+
+Roll a die, what is the probability of getting a number < 4 and even?
+
+- Set of possible results is {1,2,3,4,5,6} is the *sample space*
+
+- Two events of interest, as sets: 
+
+    $E_1 = \{1,2,3\}$ ('less than 5') 
+    
+    $E_2 = \{2,4,6\}$ ('even') 
+    
+- Combined, even *and* less than 4 is the *intersection* of E1 and E2:
+
+    $E = E_1 \cap  E_2 = \{2\}$
+
+- The probability is the *measure* of E relative to the the sample space, here $1/6$ since the measure here is just a *counter*.
+
+- Mathematical approach is independant of *interpretation* (Frequentist, Bayesian, others?)
+
+## Set Theory
+
+- A set is a collection of elements ($\{\xi_1, \xi_2, ..., \xi_n\}$)
+
+- Elements can be anything... apples, real numbers, functions, sets!
+
+- B is a *subset* of A, denoted $B \subseteq A$ if every member of B is also a member of A. 
+
+```{r}
+A <- c(1,2,3,4,5,6)
+B <- c(2,4,6)
+all(B %in% A)
+all(A %in% B)
+```
+
+## $\Omega$ and $\emptyset$ {-}
+
+- A set with no elements: $\emptyset$
+
+- The universal set ($\Omega$) is the set containing all elements under consideration. 
+
+  - Relative concept! 
+  
+  - For probability theory, this will be the *sample space*
+
+## Set Operations {-}
+
+Union: $A \cup B = \{\xi \mid \xi \in A \text{ or } \xi \in B\}$
+
+Intersection $A \cap B = \{\xi \mid \xi \in A \text{ and } \xi \in B\}$
+ 
+Complement: $A^c = \{\xi \mid \xi \in \Omega \text{ and } \xi \notin A\} = \Omega \setminus A$
+
+Note the correspondence with logic:  or, and,  not
+
+Difference:  $A\setminus B = \{\xi \mid \xi \in A \text{ and } \xi \notin B\} = A \cap B^c$ 
+
+```{r}
+A <- c(1,2,3,4,5)
+B <- c(2,4,6)
+union(A,B)
+intersect(A,B)
+setdiff(A,B)
+```
+## Important Properties {-}
+
+- $\cap$ and $\cup$ are *commutative* (Order does not matter) and *associative* (move parens around)
+
+- Distribution:
+
+$$
+A \cup (B \cap C) = (A \cup B) \cap (A \cup C)\\
+A \cap (B \cup C) = (A \cap B) \cup (A \cap C)
+$$
+- De Morgan's law:
+
+$$
+(A \cap B)^c = A^c \cup B^c\\
+(A \cup B)^c = A^c \cap B^c
+$$
+
+ 
+## Disjoint and Partition {-}
+
+- Two sets $A$ and $B$ are *disjoint* if $A\cap B = \emptyset$
+
+- A collection of sets $\{A_1,A_2,...,A_n\}$ is a *partition* of $\Omega$ if:
+
+   1. Disjoint: $A_i \cap A_j = \emptyset$
+   2. Decompose:  $\bigcup_{i=1}^n A_i = \Omega$
+
+- This is important because it allows us to decompose $\Omega$ into smaller subsets to analyze separately.
+
+`r knitr::include_graphics("images/ch02/partition.jpg")`
+
+Example  $\{1,3,4\}$, $\{4,5\}$ and $\{6\}$ form a partition of $\{1,2,3,4,5,6\}$
+
+## Probability Space
+
+Three elements constitute a probability space $(\Omega, \mathcal{F}, \mathbb{P})$
+
+   1. $\Omega$, the *sample space*, the set of all possible outcomes of an experiment.
+
+   2. $\mathcal{F}$, the *event space*,   $E \subseteq \Omega$
+   
+   3. $\mathbb{P}$ , the probability law, a *measure* mapping from an event E to number $\mathbb{P}[E]$ that satisfies the *axioms* of probability.
+
+`r knitr::include_graphics("images/ch02/prob_model.jpg")`
+
+## Sample Space $\Omega$ {-}
+
+- Set of all possible events: Must be exhaustive and exclusive
+
+- Examples
+   
+    - Throw a die: $\Omega = \{1,2,3,4,5,6\}$
+    - Flipping 2 coins: $\Omega = \{(H,H),(H,T),(T,H),(T,T)\}$ (Cartesian product)
+    - Phase angle of a Voltage: $\Omega = \{\theta \mid 0 \leq \Theta \leq 2 \pi\}$
+    - Can also be alphabets, functions, vectors, EEG signals, images ... etc.
+       
+## Event space $\mathcal{F}$ {-}
+
+- The event space consists of all possible *combinations* of outcomes (Events $E \subseteq \Omega$).
+
+- Note that an outcome is an *element* of $\Omega$, an Event is a *subset*. Can consist of one or many outcomes.
+
+- For a discrete sample space with $n$ elements, there are $2^n$ Events in $\mathcal{F}$
+
+- Example: Consider an experiment with 3 outcomes $\Omega = \{A, B , C\}$.  Then:
+
+$$
+\mathcal{F} = \{\emptyset, \{A\}, \{B\},\{C\},\{A, B\},\{A, C\},\{B, C\}, \{A,B, C\}\}
+$$
+
+## Probability law $\mathbb{P}$ {-}
+
+- A *probability law* is a function $\mathbb{P}:\mathcal{F} \rightarrow [0,1]$ of an event $E$ to a real number in $[0,1]$
+
+- It is a *measure* of the size of a set. (Imagine it as the weight)
+
+`r knitr::include_graphics("images/ch02/ProbLaw.png")`
+
+- Extends naturally to *intervals* $E= [a,b]$ is a subset of $\Omega = [0,1]$ for example and *regions* in higher dimensions.
+
+$$
+\mathbb{P}[E] = \int_a^b f(x) dx \text{ where f(x) is the 'weight' for x.}
+$$
+
+## Axioms of Probability
+Probability law cannot be arbitrary, it must satisfy the Axioms of Probability:
+
+   1. Non-negativity: $\mathbb{P}[A] \geq 0 \text{, for any } A \subseteq \Omega$
+   
+   2. Normalization: $\mathbb{P}[\Omega] = 1$
+   
+   3. Additivity: For any disjoint sets $\{A_1, A_2, ...\}$
+$$
+\mathbb{P}\left[\bigcup_{i=1}^{\infty}A_i\right]=\sum_{i=1}^{\infty}\mathbb{P}[A_i]
+$$
+
+Why these three axioms?
+
+* Axiom I (Non-negativity) ensures that probability is never negative.
+* Axiom II (Normalization) ensures that probability is never greater than 1.
+* Axiom III (Additivity) allows us to add probabilities when two events do not overlap. Natural extension from `naive` probability (`counting`)
+
+**Example**
+
+For the case where $\Omega = [0,1]$ and $\mathbb{P}[E] = \int_a^b f(x) dx$ we require (Axiom I) $f(x) \geq 0$ and (Axiom II) $\mathbb{P}[\Omega] = \int_0^1 f(x) dx =1$.  Axiom III is also satisfied due to the additivity of integration. For example, consider two (non overlapping) intervals $E_1 = [a,b]$ and $E_2 = [b,c]$
+
+$$
+\mathbb{P}[E_1 \cup E_2] = \int_a^c f(x) dx\\
+= \int_a^b f(x) dx + \int_b^c f(x) dx\\
+= \mathbb{P}[E_1] + \mathbb[E_2] 
+$$
+
+## Corollaries {-}
+
+Adding non-disjoint events:
+
+$$
+\mathbb{P}[A \cup B] = \mathbb{P}[A] +\mathbb{P}[B] - \mathbb{P}[A\cap B]
+$$
+
+`r knitr::include_graphics("images/ch02/union.jpg")`
+
+---
+
+Union bound:
+$$
+\mathbb{P}[A \cup B] \leq \mathbb{P}[A] +\mathbb{P}[B]\\ 
+$$
+The union bound is frequently used for analyzing problems where the intersection is difficult to evaluate (e.g. multiple hypothesis testing)
+
+
+## Conditional Probability
+
+In data science we are often interested in the relationship between two or more events. 
+
+Question: If $A$ has happened, what is the probability that $B$ also happens? Are they correlated? 
+
+Definition: Assume  $\mathbb{P}[B] \neq 0$, then the *conditional probability* of $A$ given $B$ is:
+$$
+\mathbb{P}[A \mid B ] = \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]}
+$$
+
+`r knitr::include_graphics("images/ch02/cond_prob.jpg")`
+
+>This is a *definition*. There are alternative formulations that take this as foundational instead, see for example E.T. Jaynes "Probability Theory, The Logic of Science"
+
+Conditional probabilities obey the axioms and are legitamate probabilities as shown in text.
+
+## Example {-}
+
+Roll 2 dice, you see one of them is a 2, what is the probability that the total is an Eight?
+
+```{r, echo = FALSE}
+dice_table  = dplyr::tibble(die1 = rep(1:6,6),
+                            die2 = cumsum(die1==1), 
+                          pairs = paste('(',die1,',',die2,')')) |> 
+              tidyr::pivot_wider(names_from = die2, values_from = pairs) |>
+              dplyr::select(-die1)
+dice_table
+```
+
+
+
+$$
+\mathbb{P}[8 \mid 2 \text{ on one die}] = \frac{\mathbb{P}[8 \cap 2 \text{on one die}]}{\mathbb{P}[2 \text{ on one die} ]}\\
+= \frac{2/36}{11/36} = 2/11
+$$
+```{r}
+rolls  = 100000
+dice = dplyr::tibble(die1 = sample(1:6, rolls, replace = TRUE),
+                     die2 = sample(1:6, rolls, replace = TRUE),
+                     total = die1 + die2)
+dice |> dplyr::filter(die1 == 2 | die2 == 2) |> 
+       dplyr::summarize(mean(total==8))
+2/11
+```
+
+
+
+## Independance {-}
+
+Two events are *independant* if $\mathbb{P}[A \mid B] = \mathbb{P}[A]$ or $\mathbb{P}[B \mid A] = \mathbb{P}[B]$. 
+
+Using the definition of conditional probability, if $\mathbb{P}[A] \geq 0$ and $\mathbb{P}[B] \geq 0$ this is:
+$$
+\frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]} = \mathbb{P}[A]\\
+\text{or}\\
+\mathbb{P}[A \cap B] =\mathbb{P}[B] \mathbb{P}[A]
+$$
+This last expression is often taken as the definition of *independent* events because it works when probabilities are zero as well.  So probabilities for *independent* events can be multiplied. 
+
+*Example*: outcome of two dice rolls: $A=\{\text{1st die is 3}\}$ and $B=  \{\text{2nd die is 4}\}$ .
+
+$\mathbb{P}[A] =\mathbb{P}[B] = 1/6$
+
+$\mathbb{P}[A \cap B] = \mathbb{P}[(3,4)] = 1/36 = \mathbb{P}[A]\mathbb{P}[B]$
+
+
+`r knitr::include_graphics("images/ch02/two_dice.jpg")`
+
+
+>Disjoint is not the same as Independant!
+
+## Bayes' Theorem and law of total probability {-}
+
+By re-arranging terms in the definition of $\mathbb{P}[A\mid B]$ and $\mathbb{P}[B \mid A]$ we have *Bayes' theorem*:
+$$
+\mathbb{P}[A \mid B] = \frac{\mathbb{P}[B \mid A]\mathbb{P}[A]}{P[B]}
+$$
+This lets us switch $A$ and $B$ in conditional probability statements. 
+
+*Law of Total Probability* lets us *decompose* an event into smaller events: let $\{A_1,A_2,...,A_n\}$ be a partition of $\Omega$. Then for any $B \subseteq \Omega$
+$$
+\mathbb{P}[B] = \sum_{i=1}^{n}\mathbb{P}[B\mid A_i]\mathbb{P}[A_i]
+$$
+Proof is in the book, but the interpretation is that if the sample space can be chopped up into subsets $A_i$, we can compute the probability of $\mathbb{P}[B]$ by summing over its portion in each of the subsets: $\mathbb{P}[B\cap A_i] = \mathbb{P}[B \mid A_i]\mathbb{P}[A_i]$.
+
+This allows us the write one of my favorite equations!
+
+$$
+\mathbb{P}[A_j \mid B] = \frac{\mathbb{P}[B \mid A_j]\mathbb{P}[A_j]}{\sum_{i=1}^{n}\mathbb{P}[B\mid A_i]\mathbb{P}[A_i]}
+$$
+
+In Bayesian statistics,  $\mathbb{P}[A_j \mid B]$ is the *posterior*, $\mathbb{P}[B \mid A_j]$ is the *likelihood*, and $\mathbb{P}[A_j]$ is the *prior*.  The denominator is the normalization factor.
+
+## Example: Monty Hall Problem {-}
+
+`r knitr::include_graphics("images/ch02/Monty_open_door.png")`
+
+To make this concrete consider the *Monty Hall Problem* (very similar to the three prisoners problem in the book).
+
+- Three doors, behind one is a prize, behind the other doors there are goats (or some other worthless prize)
+- Contestant picks a door. He has a 1/3 chance of picking the door with the prize. 
+- Monty then opens one of the other doors, always revealing a goat. Do you switch? 
+
+People tend to *not* switch, thinking that they now have a 50-50 shot at it. But on the other hand, you had 1/3 chance of getting the right one at the beginning, why would that change? So you should switch right?  
+
+Let's model this!  Let $D_1$, $D_2$ and $D_3$ be the events that the prize is behind door 1, 2, and 3. We assume the prize is randomly assigned, so $\mathbb{P}[D_1]=\mathbb{P}[D_3]=\mathbb{P}[D_3]=1/3$.  Let us call the events of Monty Hall opening each door: $M_1$, $M_2$, and $M_3$.  Assume we pick door number 1, and Monty opens door 3 revealing a goat.   Now conditioned on the prize location we can compute the (apriori) probability of Monty opening door 3:
+
+$$
+\mathbb{P}[M_3 \mid D_1] = 1/2 \text{,   }   \mathbb{P}[M_3 \mid D_2] = 1,\text{ and } \mathbb{P}[M_3 \mid D_3] = 0 
+$$
+Now use Bayes' rule to compute $\mathbb{P}[D_1|M_3]$:
+$$
+\mathbb{P}[D_1|M_3] = \frac{\mathbb{P}[M_3 \mid D_1]\mathbb{P}[D_1]}{\mathbb{P}[M_3 \mid D_1]\mathbb{P}[D_1] + \mathbb{P}[M_3 \mid D_2]\mathbb{P}[D_2] + \mathbb{P}[M_3 \mid D_3]\mathbb{P}[D_3]}\\
+= \frac{1/2*1/3}{1/2*1/3+1/3+0}= 1/3
+$$
+
+
+
+Note that $\mathbb{P}[D_1|M_3] = \mathbb{P}[D_1]$ and is independent of the door opening. So you should switch!  Surprisingly, in a *Mythbusters* episode 20 out of 20 volunteers decided not to switch!
+
+If you ever have to explain this to someone, have them think about the case with 100 doors, and after you pick a door, Monty opens up 99 goat doors. Seems pretty obvious you should switch at that point!
+
+## Monty Hall Problem: Simulation {-}
+
+Assume you choose door #1 as above.
+
+```{r}
+num_samples = 10000
+monty_1 <- dplyr::tibble(
+   door_with_prize = sample(c(1,2,3), num_samples, replace = TRUE),
+   door_monte_opens = dplyr::case_when(
+                          door_with_prize == 1 ~ sample(c(2,3), num_samples, replace = TRUE),
+                          door_with_prize == 2 ~ 3,
+                          door_with_prize == 3 ~ 2)
+)
+```
+
+Now condition on  the observation "Monty opens door 2":
+
+```{r}
+monty_1 |>
+  dplyr::filter(door_monte_opens == 2) |>
+  dplyr::summarize(mean(door_with_prize == 1))
+
+```
+
+## Monty Hall Problem: Alternative assumptions {-}
+
+- Evil Monty: He only asks you to switch when he knows you have the prize... in that case never switch.
+
+- Ignorant Monty: He *doesn't know* where the prize is! In that case he might open the door with the prize. Using the same methods we used above it can be shown that the probability you have the prize *is* now 0.50 and it doesn't matter if you switch. Let's sim!
+
+```{r}
+num_samples = 10000
+monty_1 <- dplyr::tibble(
+   door_with_prize = sample(c(1,2,3), num_samples, replace = TRUE),
+   door_monte_opens = sample(c(2,3), num_samples, replace = TRUE) 
+)
+
+# We observe open door is #2 and no prize there: 
+monty_1 |>
+   dplyr::filter(door_monte_opens == 2 & door_with_prize != 2) |>
+   dplyr::summarize(mean(door_with_prize == 1))
+```
+
+
+>For more on this probem and the media furor, see: https://en.wikipedia.org/wiki/Monty_Hall_problem.  
 
 ## Meeting Videos {-}
 
