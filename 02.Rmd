@@ -332,7 +332,7 @@ $$
 
 Note that $\mathbb{P}[D_1|M_3] = \mathbb{P}[D_1]$ and is independent of the door opening. So you should switch!  Surprisingly, in a *Mythbusters* episode 20 out of 20 volunteers decided not to switch!
 
-If you ever have to explain this to someone, have them think about the case with 100 doors, and after you pick a door, Monty opens up 99 goat doors. Seems pretty obvious you should switch at that point!
+If you ever have to explain this to someone, have them think about the case with 100 doors, and after you pick a door, Monty opens up 98 goat doors. Seems pretty obvious you should switch at that point!
 
 ## Monty Hall Problem: Simulation {-}
 
