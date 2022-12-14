@@ -308,7 +308,7 @@ In Bayesian statistics,  $\mathbb{P}[A_j \mid B]$ is the *posterior*, $\mathbb{P
 
 `r knitr::include_graphics("images/ch02/Monty_open_door.png")`
 
-This problem is inspired by the game show *Let's Make A Deal*. Maybe it should now be called the *Wayne Brady* problem! (It is similar to the *Three Prisoners Problem* described in the book)
+This problem is inspired by the game show *Let's Make A Deal*.  (It is similar to the *Three Prisoners Problem* described in the book)
 
 
 - Three doors, behind one is a prize, behind the other doors there are goats (or some other worthless prize)
