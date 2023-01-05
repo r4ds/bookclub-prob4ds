@@ -2,12 +2,287 @@
 
 **Learning objectives:**
 
--   JON WILL TRY TO FILL THESE IN.
+- Convert events/statements to numbers, via **random variables**.
+- Assign probabilities to a random variable, via **probability mass function**.
+- Formalize the **expectation** from an experiment.
 
-## SLIDE 1 {-}
+## Random Variables
 
--   ADD SLIDES AS SECTIONS (`##`).
--   TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+**Definition:** A random variable $X$ is a function 
+$X: \Omega \to \mathbb{R}$ that maps an *outcome* to a real number.
+
+- Random variables are mapping from events to numbers.
+
+## Probability measure on random variables {-}
+
+- Notation:
+
+$\mathbb{P}[X=a] = \mathbb{P}[X^{-1}(a)]$, where
+$X^{-1}(a) = \left\{ \xi\in\Omega \mid X(\xi) = a  \right\}$ 
+
+## Probability Mass Function 
+
+- Random variables have events to **numbers**.
+- Such **numbers** denote the **states** of the random variable.
+- Each **state** has some probability of ocurring.
+These probabilites are sumarized via the 
+**probability mass function** (PMF).
+
+- **Definition:** The **PMF** of a random variable $X$ is a function
+which specifies the probability of a state from X: 
+$p_{X}(x) = \mathcal{P}(X=x)$.
+
+## PMF and probability measure {-}
+
+- The PMF is the weighing function for discrete random variables.
+- Two random variables are different when their PMFs are distinct.
+
+## Normalization property {-}
+
+- **Theorem**: Any **PMF** satisfies
+$\displaystyle{ \sum_{x\in X(\Omega)} p_X (x) = 1 }$. 
+
+## PMF vs histogram {-}
+
+- Both histograms and PMFs show the *frequency of a state*.
+
+- **PMF = ideal histogram**:
+    - Histograms are usually **empirical**, generated from a dataset.
+    - Histograms may change depending on the dataset.
+    - The bigger the dataset, its histograms will **converge** 
+    to an **ideal histogram** (a distribution), which the PMF stands for.
+
+## Cummulative Distribution Functions (Discrete)
+
+- A cummulative distribution function (**CDF**) 
+is esentially the cummulative sum of a PMF, from $-\infty$, up to a certain value.
+
+- **Definition:** Let $X$ be a discrete random variable. 
+The CDF of X is $F_X (x) = \mathcal{P}[X\leq x]$ 
+
+- **Example:** 
+
+Let $X$ be a random variable with PMF 
+$p_X(0) = 1/4, p_X(1) = 1/2, p_X(2) = 1/4$,
+then, its CDF is:
+
+$F_X(0) = \mathcal{P}(X\leq 0) = p_X (0) = 1/4$ \
+$F_X(1) = \mathcal{P}(X\leq 1) =  p_X (0) + p_X (1) = 3/4$ \
+$F_X(2) = \mathcal{P}(X\leq 2) = p_X (0) +  p_X (1) + p_X (2) = 1$ 
+
+```{r}
+states <- c(0, 1, 2)
+probs <- c(1/4, 1/2, 1/4) 
+plot(
+  states, probs, type = 'h', 
+  ylim = c(0,1), main = "p_X",
+  xlab = "X states", ylab = "States probabilies"
+) 
+```
+
+```{r}
+plot(
+  states, cumsum(probs), type = 's',
+  ylim = c(0,1), main = "F_X",
+  xlab = "X states", ylab = "States cummulative probabilies"
+)
+```
+
+- There are technical reasons for why CDFs are easier to work 
+with than PMFs, but, an important one is that the CDF
+allows us to use mathematical **integration**.
+
+## Properties of the CDF {-}
+
+- **Theorem:** If $X$ is a discrete random variable, itd CDF satisfies the following:
+    1. The CDF is a sequence of **increasing** unit steps.
+    1. The CDF achieves a **maximum** at $F_X (\infty) = 1$.
+    1. The CDF achieves a **minimum** at $F_X (-\infty) = 0$.
+    1. The unit steps have **jumps** at positions $x$ where $p_X(x) >0$.
+
+## Converting between PMF and CDF {-}
+
+- **Theorem:** If $X$ is a discrete random variable with countable states
+$\{x_1, x_2, \dots\}$, then, the PMF can be obtained as
+$p_X(x_k) = F_X(x_{k}) - F_X(x_{k-1})$.
+
+## Expectation
+
+- Parameters extracted from datasets, such as **mean** and 
+**standard deviation** can also be modelled via *ideal versions* 
+using random variables.
+
+- **Definition:** The **expectation** of a random variable $X$ 
+is $\mathbb{E}[X] = \displaystyle{ \sum_{x\in X(\Omega)} } x \cdot p_X (x)$ .
+
+- Expectation is the **mean** of the random variable $X$.
+- $\mathbb{E}[X]$ does not necessarily match with some state, 
+it's more like a **center of mass** between all the states of $X$.
+
+- **Example:** Game with reward after flipping a coin 3 times.
+
+- Reward: 
+    - 0 usd, if there are 0 or 1 head.
+    - 1 usd, if there are 2 heads.
+    - 8 usd, if there are 3 heads.
+
+- Model: 
+    - $X$: Number of heads after flipping a fair coin 3 times.
+    - $Y$: Reward obtained from this game.
+
+- Sample space: HHH, HHT, HTH, THH, THT, TTH, HTT, TTT .
+
+- Values obtained:
+    - $p_X(0) = 1/8, p_X(1) = 3/8, p_X(2) = 3/8, p_X(3) = 1/8$ 
+    - $p_Y(0) = p_X(0) + p_X(1) = 4/8$ 
+    - $p_Y(1) = p_X(2) = 3/8$ 
+    - $p_Y(8) = p_X(3) = 1/8$ 
+
+- Expected reward:
+    - $E[Y] = 0\cdot 4/8 + 1\cdot 3/8 + 8\cdot 1/8 = 11/8$ .
+    - Therefore, if the cost of the game is **greater than**
+    $11/8$ usd, then, we would lose money (on average).
+
+## Existence of expectation {-}
+
+- Not every PMF has an expectation, it does when it is **absolutely summable**.
+- **Definition:** A discrete random variable $X$ is **absolutely summable** 
+if $\mathbb{E}[\mid X \mid] = \displaystyle{ \sum_{ x\in X(\Omega)} } \mid x\mid \cdot p_X (x) < \infty$ 
+
+- Most of the random variables we use in practice are absolutely summable.
+
+## Properties of expectation {-}
+
+- **Theorem:** Let $X$ be a discrete random variable; $g$ and $h$ functions;
+and $c$ a real constant. Then, the following holds:
+    - $\mathbb{E}[g(X)] = \displaystyle{ \sum_{ x \in X(\Omega)} } g(x) \cdot p_X (x)$
+    - **Linearity:** $\mathbb{E}[g(X) + h(X)] = \mathbb{E}[g(X)] + \mathbb{E}[h(X)]$
+    - **Scaling:** $\mathbb{E}[cX] = c\cdot \mathbb{E}[X]$
+    - **DC shift:** $\mathbb{E}[c + X] = c + \mathbb{E}[X]$ 
+
+## Moments and variance {-}
+
+- **Definition:** The **kth moment** of a random variable $X$ is 
+$E[X^k] = \displaystyle{ \sum_{x} } x^k \cdot p_X(x)$.
+- In practice, only the first and second moment are commonly used.
+
+- **Definition:** The **variance** of a random variable $X$ is
+$Var[X] = \mathbb{E}[(X - \mathbb{E}[X])^2]$.
+- The **standard deviation** ($\sqrt{Var[X]}$) of $X$ 
+is the *limiting object* of the usual standard deviation we
+calculate from a dataset.
+
+- **Theorem:** Let $X$ be a random variable, and $c$ some real constant.
+Then, the following holds:
+    - **Moment:** $Var[X] = \mathbb{E}[X^2] - \mathbb{E}[X]^2$ 
+    - **Scale:** $Var[cX] = c^2 \cdot Var[X]$ 
+    - **Shift invariant:** $Var[c + X] = Var[X]$
+
+## Common Discrete Random Variables
+
+## Bernoulli Random Variable {-}
+
+- **Definition:** Let $X$ be a **Bernoulli random variable**, then:
+    - $p_X(0) = 1- p, p_X(1) = p$, where $p$ is a fixed value in
+    $(0, 1)$ called the **Bernoulli parameter**.
+    - **Notation:** $X \sim Bernoulli(p)$ 
+
+## Properties of Bernoulli random variables {-}
+
+- **Theorem**: Let $X \sim Bernoulli(p)$, then:
+    - $\mathbb{E}[X] = p$ 
+    - $\mathbb{E}[X^2] = p$ 
+    - $Var[X] = p\cdot (1-p)$ 
+
+```{r}
+states <- c(0, 1)
+p <- 0.3
+
+plot(
+  states, dbinom(states, 1, p), type = 'h',
+  ylim = c(0, 1), main = "Bernoulli(p)",
+  xlab = "States", ylab = "Probabilities"
+)
+```
+
+## Binomial random variable {-}
+
+- **Definition:** Let $X$ be a **binomial random variable**, then:
+    - $p_X(k) = {n \choose k}p^k (1-p)^{n-k}$, where $p$ is a fixed value in
+    $(0, 1)$ called the **binomial parameter**, $n$ is the total number of states,
+    and $k$ belongs in $\left\{ 0, 1, \dots, n \right\}$
+    
+    
+    - **Notation:** $X \sim Binomial(n, p)$ 
+
+- **Theorem**: Let $X \sim Binomial(n, p)$, then:
+    - $\mathbb{E}[X] = np$ 
+    - $\mathbb{E}[X^2] = np(np + (1-p))$ 
+    - $Var[X] = np\cdot (1-p)$ 
+
+```{r}
+n <- 10
+states <- 0:n
+p <- 0.3
+
+plot(
+  states, dbinom(states, n, p), type = 'h',
+  ylim = c(0, 1), main = "Binomial(n, p)",
+  xlab = "States", ylab = "Probabilities"
+)
+```
+
+## Geometric random variable {-}
+
+- **Definition:** Let $X$ be a **geometric random variable**, then:
+    - $p_X(k) = (1-p)^{k-1}p$, where $p$ is a fixed value in
+    $(0, 1)$ called the **geometric parameter**
+    and $k$ is a positive integer.
+    - **Notation:** $X \sim Geometric(p)$ 
+
+- **Theorem**: Let $X \sim Geometric(p)$, then:
+    - $\mathbb{E}[X] = 1/p$ 
+    - $\mathbb{E}[X^2] = 2/p^2 - 1/p$ 
+    - $Var[X] = \dfrac{1-p}{p^2}$ 
+
+```{r}
+n <- 20
+states <- 1:n
+p <- 0.4
+
+plot(
+  states, dgeom(states, p), type = 'h',
+  ylim = c(0, 1), main = "Geom(p)",
+  xlab = "States", ylab = "Probabilities"
+)
+```
+
+
+## Poisson random variable {-}
+
+- **Definition:** Let $X$ be a **Poisson random variable**, then:
+    - $p_X(k) = \dfrac{\lambda^k}{k!}e^{\lambda}$, where $\lambda$ is a 
+    fixed positive value called the **Poisson rate**, 
+    and $k$ is a non-negative integer.
+    - **Notation:** $X \sim Poisson(\lambda)$ 
+
+- **Theorem**: Let $X \sim Poisson(\lambda)$, then:
+    - $\mathbb{E}[X] = \lambda$ 
+    - $\mathbb{E}[X^2] = \lambda + \lambda^2$ 
+    - $Var[X] = \lambda$ 
+
+```{r}
+n <- 20
+states <- 0:n
+lambda <- 1
+
+plot(
+  states, dpois(states, lambda), type = 'h',
+  ylim = c(0, 1), main = "Poisson(lambda)",
+  xlab = "States", ylab = "Probabilities"
+)
+```
+
 
 ## Meeting Videos {-}
 
