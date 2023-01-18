@@ -261,7 +261,7 @@ plot(
 ## Poisson random variable {-}
 
 - **Definition:** Let $X$ be a **Poisson random variable**, then:
-    - $p_X(k) = \dfrac{\lambda^k}{k!}e^{\lambda}$, where $\lambda$ is a 
+    - $p_X(k) = \dfrac{\lambda^k}{k!}e^{-\lambda}$, where $\lambda$ is a 
     fixed positive value called the **Poisson rate**, 
     and $k$ is a non-negative integer.
     - **Notation:** $X \sim Poisson(\lambda)$ 
