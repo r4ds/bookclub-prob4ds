@@ -2,12 +2,364 @@
 
 **Learning objectives:**
 
--   JON WILL TRY TO FILL THESE IN.
+- Learn to define the probability of  continuous event.
+- Unify continuous and discrete random variables through
+their cumulative distribution functions (**CDF**s)
+- What is a Gaussian random variable and why is it 
+so important in Data Science?
 
-## SLIDE 1 {-}
+## Probability Density Function
 
--   ADD SLIDES AS SECTIONS (`##`).
--   TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+- The author will denote non countable sets as **continous sets**.
+
+- **What is a PDF?**:
+    - It's a continuous version of a PMF.
+    - We **integrate** a PDF to compute probability.
+    - We integrate instead of [sum](https://math.stackexchange.com/questions/20661/the-sum-of-an-uncountable-number-of-positive-numbers) because *continuous events are not countable*.
+
+  
+## More in-depth discussion about PDFs {-}
+
+- **Definition**: A PDF $f_X$ of a random variable $X$ is a mapping
+from $\Omega$ to $\mathbb{R}$ with the properties:
+    - **Non-negativity**: $f_X \geq 0$ 
+    - **Unity**: Integral over sample space equals 1.
+    - **Meausre of a set**: $\mathbb{P}[\left\{ x\in A \right\}] = \displaystyle{ \int\limits_{A} f_X\; dx }$ .
+
+- Notice that the PMF mapped $\Omega$ to values in $[0; 1]$, 
+but the PDF can map elements in $\Omega$ to any non negative real number.
+
+## Connecting with the PMF {-}
+
+- $f_X(x) = \displaystyle{ \sum_{x_k \in \Omega}} p_X(x_k) \delta(x - x_k)$,
+where the **delta** *functions* satisfy:
+    - $\delta(x - x_k) = \infty$, if $x = x_k$ 
+    - $\delta(x - x_k) = 0, if $x \neq x_k$ 
+
+- Rigorously, we can't integrate such $f_X$ proposed, but, informally,
+we can treat a discrete PDF as a train of delta functions.
+
+## Expectation, Moment and Variance
+
+## Definition and properties {-}
+
+- **Definition:** The **expectation** of a continuos random variable $X$ 
+is $\mathbb{E}[X] = \displaystyle{ \int_{\Omega} } x \cdot f_X (x)\; dx$.
+
+- The following properties still hold:
+    - $\mathbb{E}[cX] = c\cdot \mathbb{E}[X]$
+    - $\mathbb{E}[c + X] = c + \mathbb{E}[X]$ 
+
+## Moment and variance {-}
+
+- **Definition:** The **kth moment** of a continuous random variable $X$ is 
+$E[X^k] = \displaystyle{ \int_{\Omega} } x^k f_X(x)$.
+
+- **Definition:** The **variance** of a continuous random variable $X$ is
+$Var[X] = \mathbb{E}[(X - \mathbb{E}[X])^2] = \displaystyle{ \int\limits_{\omega} (x-\mu)^2 f_X(x) \;dx}$.
+
+- The property $Var[X] = \mathbb{E}[X^2] - \mathbb{E}[X]^2$ still holds.
+
+- **Theorem**: Let $g: \Omega \to \mathbb{R}$ be a function and $X$ be a continuous random variable. Then
+
+$$\mathbb{E}[g(X)] = \int\limits_{\Omega} g(x) f_X(x)\; dx$$
+
+## Existence of expectation {-}
+
+- **Definition**: A random variable $X$ has an expectation if is
+**absolutely integrable**:
+
+$$\mathbb{E}[ |X| ] = \int\limits_{\Omega} |x| f_X(x)\; dx < \infty$$
+
+- **Theorem**: Any random variable $X$ satisfies $| \mathbb{E}[X]| \leq \mathbb{E}[|X|]$ .
+
+- **Example**: A random variable whose expectation is undefined is the 
+**Cauchy random variable**: $f_X(x) = \dfrac{1}{\pi (1+x^2)}$, for $x\in\mathbb{R}$.
+
+\begin{align}
+  \mathbb{E}[|X|] &= \int\limits_{-\infty}^{\infty} |x| \dfrac{1}{\pi (1+x^2)}\; dx \\
+  &= 2 \cdot \int\limits_{0}^{\infty} \dfrac{x}{\pi (1+x^2)}\; dx \\
+  &\geq 2 \cdot \int\limits_{1}^{\infty} \dfrac{x}{\pi (1+x^2)}\; dx \\
+  &\geq 2 \cdot \int\limits_{1}^{\infty} \dfrac{x}{\pi (x^2+x^2)}\; dx \\
+  &= \dfrac{1}{\pi}(\log(x))\Bigg{|}_{1}^{\infty}= \infty \;.
+\end{align}
+
+## Cumulative Distribution Function
+
+## CDF for continuous random variables {-}
+
+- **Definition**: Let $X$ be a continuous random variable with sample
+space $\Omega = \mathbb{R}$. The **cumulative distribution function** (CDF)
+of $X$ is
+
+$$F_X(x) = \mathbb{P}[X\leq x] = \int\limits_{-\infty}^{\infty} f_X(x')\; dx'$$
+
+## Properties of CDF {-}
+
+- **Theorem:** Let $X$ be a random variable (continuous or discrete), the its CDF satisfies the following properties:
+    1. The CDF is a **non-decreasing**.
+    1. The **maximum** of the CDF is when $x=\infty$: $F_X (\infty) = 1$.
+    1. The **minimum** of the CDF is when $x=-\infty$: $F_X (\infty) = 0$.
+
+&nbsp; \
+
+- **Definition**: A function $F_X(x)$ is said to be:
+    - **Left-continuous** at $x=b$ if $F_X(x) = F_X(b^-) = \lim\limits_{x' \to b^-} F_X(x')$ 
+    - **Right-continuous** at $x=b$ if $F_X(x) = F_X(b^+) = \lim\limits_{x' \to b^+} F_X(x')$ 
+    - **Continuous** at $X=b$ if it is both left-continuous and right-continuous.
+
+- **Theorem**: The CDF of any random variable (discrete or continuous) is always **right-continuous**.
+
+- **Theorem**: For any random variable $X$ (discrete or continuous):
+    -  $\mathbb{P}[X=b] = 0,$ if $F_X$ is continous at $x=b$.
+    -  $\mathbb{P}[X=b] = F_X(b) - F_X(b^-),$ if $F_X$ is discontinous at $x=b$.
+
+## Retrieving PDF from CDF {-}
+
+Now is when the fundamental theorem of Calculus (discussed in the first chapter) comes into play.
+
+- **Theorem**: The **probability density function** (PDF) and CDF satisfy:
+    - $f_X(x) = \dfrac{d F_X (x)}{dx}$, is $F_X$ is differentiable at $x$ .
+    - $f_X(x_0) = \mathbb{P}[X=x_0]\delta(x - x_0)$, is $F_X$ is not differentiable at $x=x_0$ .
+
+## CDF: Unifying discrete and random variables {-}
+
+- The CDF is always a well-defined function, integrable everywhere.
+- If the underlying random variable is continuous, so is its CDF.
+- If the underlying random variable is discrete, so is its CDF.
+
+## Median, Mode and Mean
+
+We'll know see how to calculate these parameters (commonly used empirically)
+for continuous random variables.
+
+## Median {-}
+
+- **Definition**: Let $X$ be a continuous random variable with PDF $f_X$.
+The **median** of $X$ is a point $c\in\mathbb{R}$ such that
+
+$$\int\limits_{-\infty}^{\infty} f_X(x) \; dx = \int\limits_{c}^{\infty} f_X(x) \; dx$$
+
+- **Theorem**: The **median** of a random variable $X$ is the point $c$ such that $F_X(c) = 0.5$.
+
+## Mode {-}
+
+- **Definition**: The **mode** of a continuous random variable $X$ is the point
+where $f_X$ *attains its maximum*.
+
+## Mean {-}
+
+- The **mean** of a random variable is its **expectancy**.
+- **Theorem**: The mean of random variable $X$ can be computed from its
+CDF as 
+
+$$
+  \mathbb{E}[X] = \int\limits_{0}^{\infty} (1- F_X(t))\; dt 
+  - \int\limits_{-\infty}^{0}F_X(t)\; dt
+$$
+
+## Uniform and Exponential Random Variables
+
+## Uniform random variables {-}
+
+- **Definition**: Let $X$ be a continuous **uniform random variable** defined in an interval $[a; b]$, then:
+    - $f_X(x) = \dfrac{1}{b-a}$, if $x\in [a; b]$.
+    - $f_X(x) = 0$, if $x\notin [a; b]$.
+    - Notation: $X \sim Uniform(a, b)$ 
+
+- **Theorem**: If $X \sim Uniform(a, b)$, then:
+    - $\mathbb{E}[X] = \dfrac{a+b}{2}$.
+    - $Var[X] = \dfrac{(b-a)^2}{12}$.
+
+```{r}
+# Uniform(0, 1)
+x <- seq(-1, 2, 0.01)
+
+plot(
+  x, dunif(x, 0, 1), type = 'l',
+  main = "PDF", xlab = "x", ylab = ""
+)
+
+plot(
+  x, punif(x, 0, 1), type = 'l',
+  main = "CDF", xlab = "x", ylab = "",
+  ylim = c(0,1)
+)
+```
+
+
+## Exponential random variables {-}
+
+- **Definition**: Let $X$ be an **exponential random variable** with parameter $\lambda > 0$, then:
+    - $f_X(x) = \lambda e^{-\lambda x}$, if $x\geq 0$.
+    - $f_X(x) = 0$, if $x<0$.
+    - $\lambda$ stands for the **rate of decay** ... larger $\lambda$, faster decay.
+    - Notation: $X \sim Exponential(\lambda)$ 
+
+- **Theorem**: If $X \sim Exponential(\lambda)$, then:
+    - $\mathbb{E}[X] = \dfrac{1}{\lambda}$.
+    - $Var[X] = \dfrac{1}{\lambda^2}$.
+
+- Remember that a Poisson random variable describes the **number of events** 
+that happend in a certain **period**. Then, an exponential variable is the **interarrival time** between two consecutive Poisson events; that is, how much time it takes to fo from $N$ Poisson counts to $N+1$ Poisson counts.
+
+```{r}
+# Exponential(lambda = 1)
+x <- seq(0, 50, 0.01)
+lambda <- 1
+
+plot(
+  x, dexp(x, 1), type = 'l',
+  main = "PDF", xlab = "x", ylab = ""
+)
+
+plot(
+  x, pexp(x, 1), type = 'l',
+  main = "CDF", xlab = "x", ylab = "",
+  ylim = c(0,1)
+)
+```
+
+## Gaussian Random Variables 
+
+- It's also called the **normal random variable**.
+- This is the most important continuous random variable, due to its wise use among all scientific disciplines.
+
+- **Definition**: Let $X$ be a **Gaussian random variable** with parameters $\mu, \sigma^2$, then:
+    - $f_X(x) = \dfrac{1}{\sqrt{2\pi\sigma^2}}\text{ exp }\left\{ -\dfrac{(x-\mu)^2}{2\sigma^2} \right\}$
+    - Notation: $X \sim Gaussian(\mu, \sigma^2) \sim N(\mu, \sigma^2)$ 
+
+- **Theorem**: If $X \sim Gaussian(\mu, \sigma^2)$, then:
+    - $\mathbb{E}[X] = \mu$.
+    - $Var[X] = \sigma^2$.
+
+## Standard Gaussian {-}
+
+- The PDF of a gaussian random variable does not have an antiderivative
+expressable in closed-form (expression that uses a finite amount of standard operations (basic functions and basic arithmetic operations)).
+
+- The common solution is to numerically approximate operations regarding
+the CDF of Gaussian(0, 1).
+
+- **Definition**: The **standard Gaussian/normal** random variable 
+$X\sim N(0,1)$ has a :
+    - PDF: $f_X(x) =\dfrac{1}{\sqrt{2\pi}}e^{-\dfrac{x^2}{2}}$. 
+    - CDF: $\Phi(x) = F_X(x) = \dfrac{1}{\sqrt{2\pi}} \displaystyle{ \int\limits_{-\infty}^{x} } e^{-\frac{t^2}{2}}\; dt$ 
+
+- **Theorem**: Let $X \sim \mathcal{N}(\mu, \sigma^2)$, then 
+$F_X(x) = \Phi \left( \dfrac{x-\mu}{\sigma} \right)$ 
+
+```{r}
+# Gaussian(mean = 0, variance = 1)
+x <- seq(-3, 3, 0.01)
+mean <- 0
+standard_deviation <- 1
+
+plot(
+  x, dnorm(x, mean, standard_deviation), type = 'l',
+  main = "PDF", xlab = "x", ylab = ""
+)
+
+plot(
+  x, pnorm(x, mean, standard_deviation), type = 'l',
+  main = "CDF", xlab = "x", ylab = "",
+  ylim = c(0,1)
+)
+```
+
+
+## Skewness and kurtosis {-}
+
+In modern data analysis, some high-order moments usually become useful,
+such as **skewness** and **kurtosis**.
+
+- **Skewness**:
+    - Measures the **asymmetry** of the distribution.
+    - $skewness = \mathbb{E}\left[\left( \dfrac{X-\mu}{\sigma} \right)^3\right] =: \gamma$.
+    - Gausian has skewness 0, that is, the distribution is symmetric.
+
+- **Kurtosis**:
+    - Measure how **heavy-tailed** the distribution is.
+    - $kurtosis = \mathbb{E}\left[\left( \dfrac{X-\mu}{\sigma} \right)^4\right] = \mathcal{k}$ 
+    - Gaussian has kurtosis 3.
+
+- **Empirical approximations** 
+    - $\gamma \approx \dfrac{1}{N} \displaystyle{ \sum_{n=1}^{N} \left( \dfrac{X_n-\mu}{\sigma} \right)^3}$ 
+
+    - $\mathcal{k} \approx \dfrac{1}{N} \displaystyle{ \sum_{n=1}^{N} \left( \dfrac{X_n-\mu}{\sigma} \right)^4}$ 
+
+## Origin of Gaussian random variables {-}
+
+- Tools for the more formal explanation:
+
+1. The PDF of the **sum of random variables** (X + Y) is the 
+**convolution** of $f_X$ and $f_y$ ($f_X * f_y$, which is
+
+$$
+  \left( f_X * f_Y \right)(x) = \int\limits_{-\infty}^{\infty} f_X(\tau)
+  f_Y(x - \tau) \;d\tau
+$$
+
+2. The **Fourier transform** will help us transform convolution into multiplication.
+
+$$
+\mathcal{F}\left\{ f_X * \cdots f_X \right\} = 
+\mathcal{F}\left\{ f_X \right\} \cdots 
+\mathcal{F}\left\{ f_X \right\}\; . 
+$$
+
+3. There is a particular sense of convergence, which will be explored later on,
+for which the expression $the\;distribution\;of\;the\;sum\;\;X_1 + \cdot X_n\;\;converges\;to\;a\;Gaussian\;distribution$.
+
+## Functions of Random Variables 
+
+- How does the PDF and CDF of a random variable $X$ change
+when we apply some function/transformation to $X$?
+
+## General principle {-}
+
+- If the transformation, $g$ is a **one-to-one** mapping, then:
+    - $F_Y(y) = \mathbb{P}[Y\leq Y] = \mathbb{P}[g(X)\leq Y] = \mathbb{P}[X\leq g^{-1}(y)] = F_X(g^{-1}(y))$.
+    - Via the **chain rule**: $f_Y(y) = \left( \dfrac{d g^{-1}(y)}{dy} \right) f_X(g^{-1}(y))$.
+
+## Generating Random Numbers
+
+- **Random numbers** can be useful to *simulate randomness*, so,
+let's see how we can generate them.
+
+## General principle {-}
+
+- We can generate random numbers via an **inverse problem**.
+
+- First, it turns out that is not difficult for a modern
+computers to generate random numbers **uniformly, and, between $0$ and $1$** .
+
+- Now, suppose we want to generate random numbers from another random variable $X$, with cummulative distribution function $F_X$.
+
+- Recall that the values of $F_X$ lie between $0$ and $1$.
+
+- Also, not only is $F_X$ a non-decreasing function, for most common cases it's actually **strictly increasing**, which allows us to
+correctly define its inverse fuction $F^{-1}_X$.
+
+- Then, we can generate random numbers whose distribution is $f_X$, as follows:
+    - Generate a random number $u$ between $0$ and $1$ .
+    - Calculate the **unique** value $F^{-1}_X(u)$.
+    - **Theorem**: Let $X, Y, U$ be random variables such that
+    $U \sim Uniform(0, 1)$ and $Y = F^{-1}_X(U)$. 
+    Then, the CDF of $Y$ is $F_X$.
+
+- **Examples**:
+    - Generate **Gaussian** random numbers with mean $\mu$ and 
+    variance $\sigma^2$.
+        - The CDF of the ideal distribution is 
+        $F_X(x) = \Phi(\dfrac{x-\mu}{\sigma})$.
+        - The transformation becomes
+        $F^{-1}_X(U) = \sigma\Phi^{-1}(U) + \mu$.
+    - Generate **exponential** random numbers with parameter $\lambda$.
+        - The CDF of the ideal distribution is
+        $F_X(x) = 1 - e^{-\lambda x}$.
+        - The transformation becomes
+        $F^{-1}(U) = - \dfrac{1}{\lambda}\log(1-U)$ 
 
 ## Meeting Videos {-}
 
