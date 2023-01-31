@@ -209,18 +209,96 @@ $$
 
 $$
 \begin{align}
-\mathbb{P}[X \in A]    &= \int_{\Omega_Y}\int_{A}f_{X\mid Y}(x\mid y) f_Y(y) dxdy  
+\mathbb{P}[X \in A]  &=  \int_{\Omega_Y}\mathbb{P}[Y > y \mid X= x] f_Y(y) dy\\
+&= \int_{\Omega_Y}\int_{A}f_{X\mid Y}(x\mid y) f_Y(y) dxdy  
 \end{align}
 $$
 
-## Example (Practice Exercise 5.8)
+## Example (Practice Exercise 5.8) {-}
+
+Find $\mathbb{P}[Y > y]$ where :
+$$
+X \sim Uniform[1,2]\\
+Y\mid X \sim Exponential(x)
+$$
+
+We have then $f_{Y\mid X} = x e^{-x y}$ (the Exponential distribution with rate x). For a given X, then we can compute $\mathbb{P}[Y > y \mid X= x]$:
+
+$$
+\mathbb{P}[Y> y \mid X= x] = \int_{y}^{\infty}x e^{-xy'}dy' = e^{-xy}
+$$
+and we can now integrate over the entire ($\Omega_X$) distribution for x to get the final answer:
+
+$$
+\begin{align}
+\mathbb{P}[Y> y] &= \int_{\Omega_X}\mathbb{P}[Y> y \mid X= x] f_X(x) dx  \\
+                &= \int_{1}^{2} e^{-xy} dx \\
+                &= \frac{1-e^{-y}}{y}
+\end{align}
+$$
+
+
 
 
 ## Conditional Expectation {-}
 
+- Conditional expectation is just expectation computed with conditional probability:
+
+  For discrete:
+
+$$
+\mathbb{E}[X\mid Y] = \sum_{x}  x \cdot p_{X\mid Y}(x\mid y) dx
+$$
+
+  For continuous:
+    
+$$
+\mathbb{E}[X\mid Y] = \int_{-\infty}^{\infty} x \cdot f_{X\mid Y}(x\mid y) dx
+$$
+
+- Law of total expectation allows us to decompose expectation into smaller expectations:
+
+$$
+\mathbb{E}[X] = \sum_y\mathbb{E}[X\mid Y= y]p_Y(y)\\
+\mathbb{E}[X] = \int_{-\infty}^{\infty}\mathbb{E}[X\mid Y= y]f_Y(y) dy\\ 
+\text{compact form:}\\
+\mathbb{E}[X] =  \mathbb{E}_Y[\mathbb{E}_{X|Y}[X|Y]]
+$$
+
+   Here the subscripts on the expectation tell you what distribution to use.
+    
+## Example 5.22 {-}
+
+Find $\mathbb{E}[Y]$ where $Y\mid X \sim Gaussian(X,X^2)$ and $X \sim Gaussian(\mu,\sigma^2)$.
+
+First find $\mathbb{E}_{Y \mid X}(Y \mid X)$ , which we know is simply $X$.
+
+Now using that, we find:  
+
+$$
+\mathbb{E}[Y] = \mathbb{E}_X[\mathbb{E}_{Y|X}[Y|X]] = \mathbb{E}_X[X] = \mu
+$$
+
+No need to even mess with the integrals.
+
 
 ## Sum of two random variables {-}
 
+- PDF of the sum of two random variables ($Z=X+Y$) is given by the convolution:
+
+$$
+f_Z(z) = (f_X*f_Y)(z) = \int_{-\infty}^{\infty}f_X(x-y)f_Y(y)dt
+$$
+
+   see text for details.
+
+Some common sums of distributions:
+
+`r knitr::include_graphics("images/ch05/table5p1.png")`
+ 
+
+## Random vectors {-}
+   
 ## Multidimensional gaussians {-}
 
 ## PCA {-}
