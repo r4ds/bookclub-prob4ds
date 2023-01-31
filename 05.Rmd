@@ -2,13 +2,228 @@
 
 **Learning objectives:**
 
--   JON WILL TRY TO FILL THESE IN.
+-   Learn how joint distributions are defined 
+-   Learn the properties of joint expectation $\mathbb{E}[XY]$
+-   Understand conditional distributions and expectations
+-   Learn how to work with multinormal distributions 
+-   Study an application to Principle Component Analysis
 
-## SLIDE 1 {-}
+## Joint Distributions {-}
 
--   ADD SLIDES AS SECTIONS (`##`).
--   TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+-   Joint distributions are *high-dimensional* PDFs, CDFs, and CDFs.
 
+$$
+f_\mathbf{X}(\mathbf{x}) = f_{X_1,...,X_N}(x_1,..,x_n)
+$$
+
+- First part of this chapter focuses on just two variables $f_{X_1,X_2}(x_1,x_2)$
+
+- Second part of chapter focuses on the multi variable gaussian
+
+
+## Many definitions {-}
+
+- Discrete case, joint PMF is straightforward:
+
+$$
+P_{X,Y}(x,y) = \mathbb{P}[X = x \text{ and } Y = y]
+$$
+
+- Continuous case,the joint PDF is a function $f_{X,Y}(x,y)$ that can be integrated to find the probability for an event $A$:
+
+
+$$
+\mathbb{P}[A] = \int_{A} f_{X,Y}(x,y)dxdy
+$$
+
+- Marginal PDF / PMF is defined as the integral  / sum over the other variable, e.g.
+
+$$
+f_X(x) = \int_{\Omega_Y}f_{X,Y}(x,y)dy
+$$
+
+> I.e. the probabilty density for x when we dont care about y.
+
+- Independent random variables: you can factor the pmf/pdf
+
+$$
+f_{X,Y}(x,y) = f_X(x)f_Y(y) \text{ for continious }\\
+p_{X,Y}(x,y) = p_X(x)p_Y(y)  \text{ for discrete } 
+$$
+
+- *Independent and Identically Distributed* (i.i.d.)
+
+A collection of random variables is i.i.d. if all the variables or independent (the pdf/pmf can be factored) and they all have the same exact distribution, so that the joint distribution is:
+
+$$
+f_{X_1,...,X_N}(x_1,...,x_N)= \prod_{n=1}^{N} f_{X_1}(x_n)
+$$
+
+## Joint CDF  {-}
+
+- Joint CDF can also be defined:
+
+$$
+\begin{align}
+F_{X,Y}(x,y) &= \sum_{y'\leq y}\sum_{x'\leq x}p_{X,Y}(x',y')\\
+F_{X,Y}(x,y) &= \int_{-\infty}^y\int_{-\infty}^xf_{X,Y}(x',y')dx'dy'
+\end{align}
+$$
+
+- For independent variables, these sums/integrals can be factored so that:
+
+$$
+F_{X,Y}(x,y) = F_{X}(x)F_{Y}(y)
+$$
+
+- We can also obtain the marginal CDFs by setting the other variables to infinity:
+
+$$
+F_X(x) = F_{X,Y}(x,\infty)\\
+F_Y(y) = F_{X,Y}(\infty,y)
+$$
+
+- Finally the fundamental theorem of calculus yields:
+
+$$
+f_{X,Y}(x,y) = \frac{\partial^2}{\partial x \partial y}F_{X,Y}(x,y)
+$$
+
+## Joint Expectation {-}
+
+$$
+\mathbb{E}[XY]= \sum_{\Omega_X}\sum_{\Omega_Y}x y \cdot p_{X,Y}(x,y) \text{ or}
+\\
+\mathbb{E}[XY]= \int_{\Omega_X}\int_{\Omega_Y}x y \cdot f_{X,Y}(x,y)
+$$
+
+- Why is this useful? Because it leads to the correlation and covariance.
+
+    The book spends some time justifying this for the discrete case, but I am ok just taking this as given:
+
+- Covariance of two variables X and Y is:
+
+$$
+\begin{align}
+Cov(X,Y) =& \mathbb{E}[XY]- \mathbb{E}[X]\mathbb{E}[Y] \\
+=& \mathbb{E}[(X-\mu_x)(Y- \mu_y)]
+\end{align}
+$$
+    where $\mu_x = \mathbb{E}[X]$ and $\mu_y = \mathbb{E}[Y]$
+
+- Covariance allows use to state this theorem:
+
+$$
+\mathbb{E}[X+Y] = \mathbb{E}[X] + \mathbb{E}[Y] \\
+Var[X+Y] = Var[X] + 2 Cov(X,Y) + Var[Y]
+$$
+
+## Correlation and independance {-}
+
+- The Correlation coefficient is defined as:
+
+$$
+\rho = \frac{Cov(X,Y)}{\sqrt{Var[X]Var[Y]}}
+$$
+
+- If X and Y are independent, then the book proves they are uncorrelated: 
+
+$$
+Cov(X,Y) = 0 \\
+\text{and so} \\
+\mathbb{E}[XY] = \mathbb{E}[X]\mathbb{E}[Y] 
+$$
+
+- Note that this is "one way door": Covariance can be zero for dependent variables.
+
+- Computing from data:
+
+$$
+\hat{\rho} = \frac{\frac{1}{N}\sum_{n=1}^N x_n y_n - \bar{x}\bar{y}}{\sqrt{\frac{1}{N}\sum_{n=1}^N(x_n-\bar{x})^2}\sqrt{\frac{1}{N}\sum_{n=1}^N(y_n-\bar{y})^2}} 
+$$
+
+```{r, echo=FALSE, message=FALSE}
+library(ggplot2)
+library(dplyr)
+library(MASS)
+```
+
+
+```{r}
+
+sigma <- matrix(c(3,1,1,1),nrow=2)
+
+m <- mvrnorm(n=10000, mu=c(0,0), Sigma = sigma)
+data <- tibble(x = m[,1], y=m[,2])
+print(cor(data$x,data$y))
+```
+```{r}
+1/sqrt(3)
+```
+```{r}
+data |> ggplot(aes(x=x,y=y))+geom_point()
+
+```
+
+## Conditional PMF and PDF {-}
+
+- Conditional PMF
+
+$$
+\begin{align}
+p_{X\mid Y}(x\mid y) &= \mathbb{P}[X = x \mid Y = y] \\
+&=\frac{\mathbb{P}[X=x \cap Y=y]}{\mathbb{P}[Y=y]}\\
+&= \frac{p_{X,Y}(x,y)}{p_Y(y)}
+\end{align}
+$$
+
+- Useful result: if you have conditional distribution and need marginal, to for example compute  probability of event in marginal:
+
+$$
+\begin{align}
+\mathbb{P}[X \in A] &= \sum_{x \in A}\sum_{\Omega_Y}p_{X, Y}(x,y) \\
+                    &= \sum_{x \in A}\sum_{\Omega_Y}p_{X\mid Y}(x\mid y) p_Y(y)  
+\end{align}
+$$
+- Can also define conditional CDF:
+
+$$
+F_{X\mid Y}(x \mid y) = \sum_{x'\leq x}p_{X \mid Y}(x'\mid y)
+$$
+
+- For continuous case the conditional pdf is defined:
+
+$$
+f_{X\mid Y}(x\mid y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}
+$$
+
+- Conditional CDF
+
+$$
+F_{X\mid Y}(x\mid y) = \frac{\int_{-\infty}^{x}f_{X,Y}(x',y)dx'}{f_Y(y)}
+$$
+
+  Book uses conditional CDF to justfy the PDF.
+
+- Compute probability of event in margin using conditional pdfs"
+
+$$
+\begin{align}
+\mathbb{P}[X \in A]    &= \int_{\Omega_Y}\int_{A}f_{X\mid Y}(x\mid y) f_Y(y) dxdy  
+\end{align}
+$$
+
+## Example (Practice Exercise 5.8)
+
+
+## Conditional Expectation {-}
+
+
+## Sum of two random variables {-}
+
+## Multidimensional gaussians {-}
+
+## PCA {-}
 ## Meeting Videos {-}
 
 ### Cohort 1 {-}
