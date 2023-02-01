@@ -485,7 +485,7 @@ print(cov(correlated))
 
 - Find eignenvectors and eigenvalues.
 - Sort eigenvalues from largest to smallest.  
-- Truncate at some number of eigenvalues p (and their corresponding eigenvalues)
+- Truncate at some number of eigenvalues $p < N$ (and their corresponding eigenvalues)
 - Project the predictor vectors ($\mathbf{X}$) onto this smaller basis
 
 $$
@@ -493,7 +493,7 @@ $$
 $$
 
 
-where $\mathbf{U_p}$ is the nxp matrix of eigenvectors in the smaller basis.
+where $\mathbf{U_p}$ is the Nxp matrix of eigenvectors in the smaller basis.
 
 This allows a compression of the data into a smaller set of predictors.
 
