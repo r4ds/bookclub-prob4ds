@@ -16,4 +16,5 @@ Imports:
     dplyr,
     rmarkdown,
     tidyr,
-    tidyverse
+    tidyverse,
+    MASS

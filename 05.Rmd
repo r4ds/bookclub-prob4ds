@@ -2,12 +2,565 @@
 
 **Learning objectives:**
 
--   JON WILL TRY TO FILL THESE IN.
+-   Learn how joint distributions are defined 
+-   Learn the properties of joint expectation $\mathbb{E}[XY]$
+-   Understand conditional distributions and expectations
+-   Learn how to work with multivariate normal distributions 
+-   Briefly examine Principle Component Analysis
 
-## SLIDE 1 {-}
+## Joint Distributions {-}
 
--   ADD SLIDES AS SECTIONS (`##`).
--   TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+-   Joint distributions are *high-dimensional* PDFs, CDFs, and CDFs.
+
+$$
+f_\mathbf{X}(\mathbf{x}) = f_{X_1,...,X_N}(x_1,..,x_n)
+$$
+
+- First part of this chapter focuses on just two variables $f_{X_1,X_2}(x_1,x_2)$
+
+- Second part of chapter focuses on the multi variable gaussian
+
+
+## Many definitions {-}
+
+- Discrete case, joint PMF is straightforward:
+
+$$
+P_{X,Y}(x,y) = \mathbb{P}[X = x \text{ and } Y = y]
+$$
+
+- Continuous case,the joint PDF is a function $f_{X,Y}(x,y)$ that can be integrated to find the probability for an event $A$:
+
+
+$$
+\mathbb{P}[A] = \int_{A} f_{X,Y}(x,y)dxdy
+$$
+
+- Marginal PDF / PMF is defined as the integral  / sum over the other variable, e.g.
+
+$$
+f_X(x) = \int_{\Omega_Y}f_{X,Y}(x,y)dy
+$$
+
+> I.e. the probabilty density for x when we dont care about y.
+
+- Independent random variables: you can factor the pmf/pdf
+
+$$
+f_{X,Y}(x,y) = f_X(x)f_Y(y) \text{ for continious }\\
+p_{X,Y}(x,y) = p_X(x)p_Y(y)  \text{ for discrete } 
+$$
+
+- *Independent and Identically Distributed* (i.i.d.)
+
+A collection of random variables is i.i.d. if all the variables or independent (the pdf/pmf can be factored) and they all have the same exact distribution, so that the joint distribution is:
+
+$$
+f_{X_1,...,X_N}(x_1,...,x_N)= \prod_{n=1}^{N} f_{X_1}(x_n)
+$$
+
+## Joint CDF  {-}
+
+- Joint CDF can also be defined:
+
+$$
+\begin{align}
+F_{X,Y}(x,y) &= \sum_{y'\leq y}\sum_{x'\leq x}p_{X,Y}(x',y')\\
+F_{X,Y}(x,y) &= \int_{-\infty}^y\int_{-\infty}^xf_{X,Y}(x',y')dx'dy'
+\end{align}
+$$
+
+- For independent variables, these sums/integrals can be factored so that:
+
+$$
+F_{X,Y}(x,y) = F_{X}(x)F_{Y}(y)
+$$
+
+- We can also obtain the marginal CDFs by setting the other variables to infinity:
+
+$$
+F_X(x) = F_{X,Y}(x,\infty)\\
+F_Y(y) = F_{X,Y}(\infty,y)
+$$
+
+- Finally the fundamental theorem of calculus yields:
+
+$$
+f_{X,Y}(x,y) = \frac{\partial^2}{\partial x \partial y}F_{X,Y}(x,y)
+$$
+
+## Joint Expectation {-}
+
+$$
+\mathbb{E}[XY]= \sum_{\Omega_X}\sum_{\Omega_Y}x y \cdot p_{X,Y}(x,y) \text{ or}
+\\
+\mathbb{E}[XY]= \int_{\Omega_X}\int_{\Omega_Y}x y \cdot f_{X,Y}(x,y)
+$$
+
+- Why is this useful? Because it leads to the correlation and covariance.
+
+    The book spends some time justifying this for the discrete case, but I am ok just taking this as given:
+
+- Covariance of two variables X and Y is:
+
+$$
+\begin{align}
+Cov(X,Y) =& \mathbb{E}[XY]- \mathbb{E}[X]\mathbb{E}[Y] \\
+=& \mathbb{E}[(X-\mu_x)(Y- \mu_y)]
+\end{align}
+$$
+    where $\mu_x = \mathbb{E}[X]$ and $\mu_y = \mathbb{E}[Y]$
+
+- Covariance allows use to state this theorem:
+
+$$
+\mathbb{E}[X+Y] = \mathbb{E}[X] + \mathbb{E}[Y] \\
+Var[X+Y] = Var[X] + 2 Cov(X,Y) + Var[Y]
+$$
+
+## Correlation and independance {-}
+
+- The Correlation coefficient is defined as:
+
+$$
+\rho = \frac{Cov(X,Y)}{\sqrt{Var[X]Var[Y]}}
+$$
+
+- If X and Y are independent, then the book proves they are uncorrelated: 
+
+$$
+Cov(X,Y) = 0 \\
+\text{and so} \\
+\mathbb{E}[XY] = \mathbb{E}[X]\mathbb{E}[Y] 
+$$
+
+- Note that this is "one way door": Covariance can be zero for dependent variables.
+
+- Computing from data:
+
+$$
+\hat{\rho} = \frac{\frac{1}{N}\sum_{n=1}^N x_n y_n - \bar{x}\bar{y}}{\sqrt{\frac{1}{N}\sum_{n=1}^N(x_n-\bar{x})^2}\sqrt{\frac{1}{N}\sum_{n=1}^N(y_n-\bar{y})^2}} 
+$$
+
+```{r, echo=FALSE, message=FALSE}
+library(ggplot2)
+library(dplyr)
+library(MASS)
+```
+
+
+```{r}
+
+sigma <- matrix(c(3,1,1,1),nrow=2)
+
+m <- mvrnorm(n=10000, mu=c(0,0), Sigma = sigma)
+data <- tibble(x = m[,1], y=m[,2])
+print(cor(data$x,data$y))
+```
+```{r}
+1/sqrt(3)
+```
+```{r}
+data |> ggplot(aes(x=x,y=y))+geom_point()
+
+```
+
+## Conditional PMF and PDF {-}
+
+- Conditional PMF
+
+$$
+\begin{align}
+p_{X\mid Y}(x\mid y) &= \mathbb{P}[X = x \mid Y = y] \\
+&=\frac{\mathbb{P}[X=x \cap Y=y]}{\mathbb{P}[Y=y]}\\
+&= \frac{p_{X,Y}(x,y)}{p_Y(y)}
+\end{align}
+$$
+
+- Useful result: if you have conditional distribution and need marginal, to for example compute  probability of event in marginal:
+
+$$
+\begin{align}
+\mathbb{P}[X \in A] &= \sum_{x \in A}\sum_{\Omega_Y}p_{X, Y}(x,y) \\
+                    &= \sum_{x \in A}\sum_{\Omega_Y}p_{X\mid Y}(x\mid y) p_Y(y)  
+\end{align}
+$$
+- Can also define conditional CDF:
+
+$$
+F_{X\mid Y}(x \mid y) = \sum_{x'\leq x}p_{X \mid Y}(x'\mid y)
+$$
+
+- For continuous case the conditional pdf is defined:
+
+$$
+f_{X\mid Y}(x\mid y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}
+$$
+
+- Conditional CDF
+
+$$
+F_{X\mid Y}(x\mid y) = \frac{\int_{-\infty}^{x}f_{X,Y}(x',y)dx'}{f_Y(y)}
+$$
+
+  Book uses conditional CDF to justfy the PDF.
+
+- Compute probability of event in margin using conditional pdfs"
+
+$$
+\begin{align}
+\mathbb{P}[X \in A]  &=  \int_{\Omega_Y}\mathbb{P}[Y > y \mid X= x] f_Y(y) dy\\
+&= \int_{\Omega_Y}\int_{A}f_{X\mid Y}(x\mid y) f_Y(y) dxdy  
+\end{align}
+$$
+
+## Example (Practice Exercise 5.8) {-}
+
+Find $\mathbb{P}[Y > y]$ where :
+$$
+X \sim Uniform[1,2]\\
+Y\mid X \sim Exponential(x)
+$$
+
+We have then $f_{Y\mid X} = x e^{-x y}$ (the Exponential distribution with rate x). For a given X, then we can compute $\mathbb{P}[Y > y \mid X= x]$:
+
+$$
+\mathbb{P}[Y> y \mid X= x] = \int_{y}^{\infty}x e^{-xy'}dy' = e^{-xy}
+$$
+and we can now integrate over the entire ($\Omega_X$) distribution for x to get the final answer:
+
+$$
+\begin{align}
+\mathbb{P}[Y> y] &= \int_{\Omega_X}\mathbb{P}[Y> y \mid X= x] f_X(x) dx  \\
+                &= \int_{1}^{2} e^{-xy} dx \\
+                &= \frac{1-e^{-y}}{y}
+\end{align}
+$$
+
+
+
+
+## Conditional Expectation {-}
+
+- Conditional expectation is just expectation computed with conditional probability:
+
+  For discrete:
+
+$$
+\mathbb{E}[X\mid Y] = \sum_{x}  x \cdot p_{X\mid Y}(x\mid y) dx
+$$
+
+  For continuous:
+    
+$$
+\mathbb{E}[X\mid Y] = \int_{-\infty}^{\infty} x \cdot f_{X\mid Y}(x\mid y) dx
+$$
+
+- Law of total expectation allows us to decompose expectation into smaller expectations:
+
+$$
+\mathbb{E}[X] = \sum_y\mathbb{E}[X\mid Y= y]p_Y(y)\\
+\mathbb{E}[X] = \int_{-\infty}^{\infty}\mathbb{E}[X\mid Y= y]f_Y(y) dy\\ 
+\text{compact form:}\\
+\mathbb{E}[X] =  \mathbb{E}_Y[\mathbb{E}_{X|Y}[X|Y]]
+$$
+
+   Here the subscripts on the expectation tell you what distribution to use.
+    
+## Example 5.22 {-}
+
+Find $\mathbb{E}[Y]$ where $Y\mid X \sim Gaussian(X,X^2)$ and $X \sim Gaussian(\mu,\sigma^2)$.
+
+First find $\mathbb{E}_{Y \mid X}(Y \mid X)$ , which we know is simply $X$.
+
+Now using that, we find:  
+
+$$
+\mathbb{E}[Y] = \mathbb{E}_X[\mathbb{E}_{Y|X}[Y|X]] = \mathbb{E}_X[X] = \mu
+$$
+
+No need to even mess with the integrals.
+
+
+## Sum of two random variables {-}
+
+- PDF of the sum of two random variables ($Z=X+Y$) is given by the convolution:
+
+$$
+f_Z(z) = (f_X*f_Y)(z) = \int_{-\infty}^{\infty}f_X(z-y)f_Y(y)dt
+$$
+
+   see text for details.
+
+Some common sums of distributions:
+
+`r knitr::include_graphics("images/ch05/table5p1.png")`
+ 
+
+## Random vectors {-}
+
+- Now we return to more then 2 variables, and look at random vectors:
+
+$$
+f_\mathbf{X}(\mathbf{x}) = f_{X_1,...,X_N}(x_1,..,x_n)
+$$
+
+Where
+
+$$
+\mathbf{X} = 
+\begin{bmatrix}
+X_1 \\
+X_2 \\
+... \\
+X_N
+\end{bmatrix}
+$$
+
+- Expectation is straightforward, and the vector mean $\mathbf{\mu}$ is defined:
+
+$$
+\mathbf{\mu} = \mathbb{E}[\mathbf{X}] = 
+\begin{bmatrix}
+\mathbb{E}[X_1] \\
+... \\
+\mathbb{E}[X_N]
+\end{bmatrix}
+$$
+
+- For covariance, each variables has a variance, and there are covariances between all the possible pairs. These are organized into a convenient matrix $\mathbf{\Sigma}$:
+
+$$
+\mathbf{\Sigma} = Cov(\mathbf{X}) =
+\begin{bmatrix}
+Var[X_1] & Cov(X_1,X_2) & ... & Cov(X_1, X_N)\\
+Cov(X_2,X_1) & Var[X_2] & ... & Cov(X_2, X_N)\\
+\vdots       & \vdots   & \ddots & \vdots \\
+Cov(X_N,X_1) & Cov(X_n, X_2) & ... &Var[X_N]
+\end{bmatrix}
+$$
+
+which is more compactly written:
+
+$$
+\mathbf{\Sigma} = \mathbb{E}[(\mathbf{X}-\mathbf{\mu})(\mathbf{X}-\mathbf{\mu})^T]
+$$
+
+- If the variables are all independant, the Covariances are all zero and we have a diagonal covariance matrix:
+
+$$
+\mathbf{\Sigma} = Cov(\mathbf{X}) =
+\begin{bmatrix}
+Var[X_1] & 0 & ... & 0\\
+0 & Var[X_2] & ... & 0)\\
+\vdots       & \vdots   & \ddots & \vdots \\
+0 & 0 & ... &Var[X_N]
+\end{bmatrix}
+$$
+
+
+## Multidimensional gaussians {-}
+
+*An important case of a random vector is the multidimensional Gaussian. For d-dimensions:*
+
+$$
+f_{\mathbf{X}}(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^d|\mathbf{\Sigma}|}}exp\left( -\frac{1}{2}(\mathbf{x}-\mathbf{\mu})^T\Sigma^{-1}(\mathbf{x}-\mathbf{\mu})\right)
+$$
+It can be shown that:
+
+$$
+\mathbb{E}[\mathbf{X}] = \mu \text{  and  } Cov(\mathbf{X})=\mathbf{\Sigma}
+$$
+
+If the variables are independant this simplifies (as shown in text):
+
+$$
+f_{\mathbf{X}}(\mathbf{x}) = 
+\prod_{i=1}^n\frac{1}{\sqrt{(2 \pi)\sigma_i^2}}exp\left(-\frac{(x-\mu_i)^2}{2 \sigma_i^2} \right)
+$$
+
+where $\sigma_i^2 = Var[X_i]$
+
+### Example in R {-}
+
+Recall the example above, where $\Sigma = \begin{bmatrix} 3 & 1 \\ 1 & 1 \end{bmatrix}$
+
+```{r}
+data |> ggplot(aes(x=x,y=y))+geom_point()
+
+```
+
+Let's compute the covariance matrix from the data:
+
+```{r}
+cov(data)
+```
+
+## Transformations of Gaussians {-}
+
+If we transform a random vector of dimension N with a linear transformation $\mathbf{Y} = \mathbf{A X} + \mathbf{b}$ where $\mathbf{A}$ is an NxN matrix,  the text shows that (not just for Gaussians!):
+
+$$
+\mathbf{\mu_Y} = \mathbf{A\mu_X + b}\\
+\mathbf{\Sigma_Y}= \mathbf{A\Sigma_XA^T}
+$$
+
+This shows in general how to rotate and scale random vectors. 
+
+### Eigendecomposition {-} 
+ 
+The text reviews the concepts of finding the eigenvectors and eigenvalues of matrix. The main result for us is that we can *diagonalize* the covariance matrix:
+
+$$
+\mathbf{\Sigma} = \mathbf{U\Lambda U^T}
+$$
+
+where $\Lambda$ is a diagonal matrix with the eigenvalues along the diagonal, and $\mathbf{U}$ is the matrix formed from the corresponding normalized eigenvectors: 
+
+$$
+\mathbf{U} = \begin{bmatrix}
+\mathbf{u}_1 & ... & \mathbf{u}_N
+\end{bmatrix}
+$$
+
+
+The columns are $U$ are orthonormal ($U^TU=I$) and can serve as a basis:
+
+$$
+\begin{align}
+&\mathbf{x} = \sum_{j=1}^N\alpha_j \mathbf{u}_j \\
+\\
+&\text{with basis coefficients:}\\
+\\
+&\alpha_j = \mathbf{u}_j^T\mathbf{x}
+\end{align}
+$$
+
+This allows us to understand the multivariate Gaussian: the basis vectors are the orientation of the ellipsoids and the eigenvalues are the width of the distribution along those basis vector directions.
+
+`r knitr::include_graphics("images/ch05/Figure5p18.png")`
+
+>Note: the covariance matrix must be symmetric positive semi-definite, which means it must be symmetric and the eigenvalues cannot be negative. This makes sense when you look at the structure of the covariance matrix!   
+
+## Generating random variables {-}
+
+A procedure for generating random variables from a single variable Gaussian is typically available in any data science system (in `r` , we can use `rnorm`), but how can we generate a multivariate Gaussian? In `r` there are libraries (e.g. `MASS`) that can do this for you, but we now have the tools generate these directly from `rnorm`.  
+
+The ideas is to start with i.i.d. random normal variables arranged as vector $\mathbf{X}$ with mean zero and standard deviation 1.  The covariance matrix for this random vector is diagonal with all 1's along the diagonal.   Now  transform the variable:
+
+$$
+\mathbf{Y} = \mathbf{\Sigma^{1/2} X} + \mathbf{\mu}  
+$$
+Then the distribution of $\mathbf{Y}$ (as shown in text) has mean $\mathbf{\mu}$ and covariance $\mathbf{\Sigma}$.  
+
+```{r}
+
+sigma <- matrix(c(3,1,1,1),nrow=2)
+
+# compute matrix square root
+ev <- eigen(sigma)
+ev$values <- sqrt(ev$values)
+sigma_root <- ev$vectors %*% diag(ev$values) %*% t(ev$vectors)
+
+sigma_root %*% sigma_root
+```
+
+
+Ok sqrt in hand, we can compute perform the transform:
+
+```{r}
+# random normal variables
+uncorr <-   matrix(rnorm(2000),ncol=2)
+print(cov(uncorr))
+# multiply by sqrt of sigma
+correlated <-  t(apply(uncorr,1,\(x)sigma_root %*% x))
+print(cov(correlated))
+```
+- This process can also be used in reverse to 'whiten' an noise source (for example for random number generation from a natural source)
+
+## PCA {-}
+
+*Key idea is of PCA is eigendecomposition of the covariance matrix*
+
+- Find eignenvectors and eigenvalues.
+- Sort eigenvalues from largest to smallest.  
+- Truncate at some number of eigenvalues $p < N$ (and their corresponding eigenvalues)
+- Project the predictor vectors ($\mathbf{X}$) onto this smaller basis
+
+$$
+\mathbf{\alpha^{(n)}} = \mathbf{U_p^Tx^{(n)}}
+$$
+
+
+where $\mathbf{U_p}$ is the Nxp matrix of eigenvectors in the smaller basis.
+
+This allows a compression of the data into a smaller set of predictors.
+
+Note there are some limitations of PCA:
+
+- PCA fails when raw data is not orthogonal
+
+- Basis vectors returned by PCA are not interpretable
+
+- PCA does not return the most *influential* component (it doesn't depend at all on the `response` variable.)
+
+## PCA example {-}
+
+Borrowed from Introduction to Statistical Learning, USArrests is a dataset that is part of base R. The dataset is for crime statistics for the 50 US states in 1973. It contains arrests per 100,000 for three categories of crime and also the percentage of urban population.  
+
+
+```{r}
+states <- row.names(USArrests)
+apply(USArrests,2, mean)
+```
+
+```{r}
+cov(USArrests)
+```
+
+The scale of these these is quite different, so lets center and scale the data:
+
+```{r}
+USArrests_cs <- scale(USArrests)
+USArrests_cov <- cov(USArrests_cs)
+```
+
+
+According to the prescription, we should find the eigensystem:
+
+```{r}
+es <- eigen(USArrests_cov)
+es$values
+```
+
+The largest eigenvalue (and hence first principle component) corresponds to the eigenvector:
+
+```{r}
+es$vectors[,1]
+```
+verify its an eigenvector:
+
+```{r}
+USArrests_cov %*% es$vectors[,1]/es$values[[1]]
+```
+
+Compare this to the prcomp method:
+
+```{r}
+pr <- prcomp(USArrests, scale = TRUE)
+pr$rotation
+```
+
+```{r}
+es$vectors
+```
+
+We could press on and compute the data coefficients manually, but in the interest of time, we can just use `biplot` on the output from `prcomp`
+
+```{r}
+biplot(pr, scale = 0)
+```
+
 
 ## Meeting Videos {-}
 
