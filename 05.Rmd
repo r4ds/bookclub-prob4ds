@@ -408,27 +408,36 @@ $$
 
 This shows in general how to rotate and scale random vectors. 
 
-### Eigendecomposition 
+### Eigendecomposition {-} 
  
-The text reviews this quite well, with the result being that we can *diagonalize* the covariance matrix:
+The text reviews the concepts of finding the eigenvectors and eigenvalues of matrix. The main result for us is that we can *diagonalize* the covariance matrix:
 
 $$
 \mathbf{\Sigma} = \mathbf{U\Lambda U^T}
 $$
 
-where $\Lambda$ is diagonal, and the columns are $U$ are orthonormal ($U^TU=I$). If the columns of $U$ are $u_i$ then these can serve as a basis:
+where $\Lambda$ is a diagonal matrix with the eigenvalues along the diagonal, and $\mathbf{U}$ is the matrix formed from the corresponding normalized eigenvectors: 
+
+$$
+\mathbf{U} = \begin{bmatrix}
+\mathbf{u}_1 & ... & \mathbf{u}_N
+\end{bmatrix}
+$$
+
+
+The columns are $U$ are orthonormal ($U^TU=I$) and can serve as a basis:
 
 $$
 \begin{align}
 &\mathbf{x} = \sum_{j=1}^N\alpha_j \mathbf{u}_j \\
 \\
-&\text{whith basis coefficients:}\\
+&\text{with basis coefficients:}\\
 \\
 &\alpha_j = \mathbf{u}_j^T\mathbf{x}
 \end{align}
 $$
 
-This allows us to understand the mutivarient gaussian: the basis vectors are the orientation of the ellipsoids and the eigenvalues are the width of the distribution along those basis vector directions.
+This allows us to understand the multivariate Gaussian: the basis vectors are the orientation of the ellipsoids and the eigenvalues are the width of the distribution along those basis vector directions.
 
 `r knitr::include_graphics("images/ch05/Figure5p18.png")`
 
@@ -462,13 +471,39 @@ Ok sqrt in hand, we can compute perform the transform:
 
 ```{r}
 # random normal variables
-example <- tibble(x1 = rnorm(1000),
-           x2 = rnorm(1000))
-
-
+uncorr <-   matrix(rnorm(2000),ncol=2)
+print(cov(uncorr))
+# multiply by sqrt of sigma
+correlated <-  t(apply(uncorr,1,\(x)sigma_root %*% x))
+print(cov(correlated))
 ```
+- This process can also be used in reverse to 'whiten' an noise source (for example for random number generation from a natural source)
 
 ## PCA {-}
+
+*Key idea is of PCA is eigendecomposition of the covariance matrix*
+
+- Find eignenvectors and eigenvalues.
+- Sort eigenvalues from largest to smallest.  
+- Truncate at some number of eigenvalues p (and their corresponding eigenvalues)
+- Project the predictor vectors ($\mathbf{X}$) onto this smaller basis
+
+$$
+\mathbf{\alpha^{(n)}} = \mathbf{U_p^Tx^{(n)}}
+$$
+
+
+where $\mathbf{U_p}$ is the nxp matrix of eigenvectors in the smaller basis.
+
+This allows a compression of the data into a smaller set of predictors.
+
+Note there are some limitations of PCA:
+
+- PCA fails when raw data is not orthogonal
+
+- Basis vectors returned by PCA are not interpretable
+
+- PCA does not return the most *influential* component (it doesn't depend at all on the `response` variable.)
 
 ## Meeting Videos {-}
 
