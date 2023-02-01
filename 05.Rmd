@@ -436,6 +436,38 @@ This allows us to understand the mutivarient gaussian: the basis vectors are the
 
 ## Generating random variables {-}
 
+A procedure for generating random variables from a signle variable Guassian is typically available in any data science system (in `r` , we can use `rnorm`), but how can we generate a multivariate Gaussian? In `r` there are libraries (e.g. `MASS`) that can do this for you, but we now have the tools generate these directly from `rnorm`.  
+
+The ideas is to start with i.i.d. random normal variables arranged as vector $\mathbf{X}$ with mean zero and standard deviation 1.  The covariance matrix for this random vector is diagonal with all 1's along the diagonal.   Now  transform the variable:
+
+$$
+\mathbf{Y} = \mathbf{\Sigma^{1/2} X} + \mathbf{\mu}  
+$$
+Then the distribution of $\mathbf{Y}$ (as shown in text) has mean $\mathbf{\mu}$ and covariance $\mathbf{\Sigma}$.  
+
+```{r}
+
+sigma <- matrix(c(3,1,1,1),nrow=2)
+
+# compute matrix square root
+ev <- eigen(sigma)
+ev$values <- sqrt(ev$values)
+sigma_root <- ev$vectors %*% diag(ev$values) %*% t(ev$vectors)
+
+sigma_root %*% sigma_root
+```
+
+
+Ok sqrt in hand, we can compute perform the transform:
+
+```{r}
+# random normal variables
+example <- tibble(x1 = rnorm(1000),
+           x2 = rnorm(1000))
+
+
+```
+
 ## PCA {-}
 
 ## Meeting Videos {-}
