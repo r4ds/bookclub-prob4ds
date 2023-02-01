@@ -298,10 +298,146 @@ Some common sums of distributions:
  
 
 ## Random vectors {-}
-   
+
+- Now we return to more then 2 variables, and look at random vectors:
+
+$$
+f_\mathbf{X}(\mathbf{x}) = f_{X_1,...,X_N}(x_1,..,x_n)
+$$
+
+Where
+
+$$
+\mathbf{X} = 
+\begin{bmatrix}
+X_1 \\
+X_2 \\
+... \\
+X_N
+\end{bmatrix}
+$$
+
+- Expectation is straightforward, and the vector mean $\mathbf{\mu}$ is defined:
+
+$$
+\mathbf{\mu} = \mathbb{E}[\mathbf{X}] = 
+\begin{bmatrix}
+\mathbb{E}[X_1] \\
+... \\
+\mathbb{E}[X_N]
+\end{bmatrix}
+
+$$
+
+- For covariance, each variables has a variance, and there are covariances between all the possible pairs. These are organized into a convenient matrix $\mathbf{\Sigma}$:
+
+$$
+\mathbf{\Sigma} = Cov(\mathbf{X}) =
+\begin{bmatrix}
+Var[X_1] & Cov(X_1,X_2) & ... & Cov(X_1, X_N)\\
+Cov(X_2,X_1) & Var[X_2] & ... & Cov(X_2, X_N)\\
+\vdots       & \vdots   & \ddots & \vdots \\
+Cov(X_N,X_1) & Cov(X_n, X_2) & ... &Var[X_N]
+\end{bmatrix}
+$$
+
+which is more compactly written:
+
+$$
+\mathbf{\Sigma} = \mathbb{E}[(\mathbf{X}-\mathbf{\mu})(\mathbf{X}-\mathbf{\mu})^T]
+$$
+
+- If the variables are all independant, the Covariances are all zero and we have a diagonal covariance matrix:
+
+$$
+\mathbf{\Sigma} = Cov(\mathbf{X}) =
+\begin{bmatrix}
+Var[X_1] & 0 & ... & 0\\
+0 & Var[X_2] & ... & 0)\\
+\vdots       & \vdots   & \ddots & \vdots \\
+0 & 0 & ... &Var[X_N]
+\end{bmatrix}
+$$
+
+
 ## Multidimensional gaussians {-}
 
+*An important case of a random vector is the multidimensional Gaussian. For d-dimensions:*
+
+$$
+f_{\mathbf{X}}(\mathbf{x}) = \frac{1}{\sqrt{(2\pi)^d|\mathbf{\Sigma}|}}exp\left( -\frac{1}{2}(\mathbf{x}-\mathbf{\mu})^T\Sigma^{-1}(\mathbf{x}-\mathbf{\mu})\right)
+$$
+It can be shown that:
+
+$$
+\mathbb{E}[\mathbf{X}] = \mu \text{  and  } Cov(\mathbf{X})=\mathbf{\Sigma}
+$$
+
+If the variables are independant this simplifies (as shown in text):
+
+$$
+f_{\mathbf{X}}(\mathbf{x}) = 
+\prod_{i=1}^n\frac{1}{\sqrt{(2 \pi)\sigma_i^2}}exp\left(-\frac{(x-\mu_i)^2}{2 \sigma_i^2} \right)
+$$
+
+where $\sigma_i^2 = Var[X_i]$
+
+### Example in R {-}
+
+Recall the example above, where $\Sigma = \begin{bmatrix} 3 & 1 \\ 1 & 1 \end{bmatrix}$
+
+```{r}
+data |> ggplot(aes(x=x,y=y))+geom_point()
+
+```
+
+Let's compute the covariance matrix from the data:
+
+```{r}
+cov(data)
+```
+
+## Transformations of Gaussians {-}
+
+If we transform a random vector of dimension N with a linear transformation $\mathbf{Y} = \mathbf{A X} + \mathbf{b}$ where $\mathbf{A}$ is an NxN matrix,  the text shows that (not just for Gaussians!):
+
+$$
+\mathbf{\mu_Y} = \mathbf{A\mu_X + b}\\
+\mathbf{\Sigma_Y}= \mathbf{A\Sigma_XA^T}
+$$
+
+This shows in general how to rotate and scale random vectors. 
+
+### Eigendecomposition 
+ 
+The text reviews this quite well, with the result being that we can *diagonalize* the covariance matrix:
+
+$$
+\mathbf{\Sigma} = \mathbf{U\Lambda U^T}
+$$
+
+where $\Lambda$ is diagonal, and the columns are $U$ are orthonormal ($U^TU=I$). If the columns of $U$ are $u_i$ then these can serve as a basis:
+
+$$
+\begin{align}
+&\mathbf{x} = \sum_{j=1}^N\alpha_j \mathbf{u}_j \\
+\\
+&\text{whith basis coefficients:}\\
+\\
+&\alpha_j = \mathbf{u}_j^T\mathbf{x}
+\end{align}
+$$
+
+This allows us to understand the mutivarient gaussian: the basis vectors are the orientation of the ellipsoids and the eigenvalues are the width of the distribution along those basis vector directions.
+
+`r knitr::include_graphics("images/ch05/Figure5p18.png")`
+
+>Note: the covariance matrix must be symmetric positive semi-definite, which means it must be symmetric and the eigenvalues cannot be negative. This makes sense when you look at the structure of the covariance matrix!   
+
+## Generating random variables {-}
+
 ## PCA {-}
+
 ## Meeting Videos {-}
 
 ### Cohort 1 {-}
