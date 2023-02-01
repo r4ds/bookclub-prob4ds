@@ -5,8 +5,8 @@
 -   Learn how joint distributions are defined 
 -   Learn the properties of joint expectation $\mathbb{E}[XY]$
 -   Understand conditional distributions and expectations
--   Learn how to work with multinormal distributions 
--   Study an application to Principle Component Analysis
+-   Learn how to work with multivariate normal distributions 
+-   Briefly examine Principle Component Analysis
 
 ## Joint Distributions {-}
 
@@ -504,6 +504,63 @@ Note there are some limitations of PCA:
 - Basis vectors returned by PCA are not interpretable
 
 - PCA does not return the most *influential* component (it doesn't depend at all on the `response` variable.)
+
+## PCA example {-}
+
+Borrowed from Introduction to Statistical Learning, USArrests is a dataset that is part of base R. It contains arrests per 100,000 for four categories for each of the 50 states for 1973.
+
+```{r}
+states <- row.names(USArrests)
+apply(USArrests,2, mean)
+```
+
+```{r}
+cov(USArrests)
+```
+
+The scale of these these is quite different, so lets center and scale the data:
+
+```{r}
+USArrests_cs <- scale(USArrests)
+USArrests_cov <- cov(USArrests_cs)
+```
+
+
+According to the prescription, we should find the eigensystem:
+
+```{r}
+es <- eigen(USArrests_cov)
+es$values
+```
+
+The largest eigenvalue (and hence first principle component) corresponds to the eigenvector:
+
+```{r}
+es$vectors[,1]
+```
+verify its an eigenvector:
+
+```{r}
+USArrests_cov %*% es$vectors[,1]/es$values[[1]]
+```
+
+Compare this to the prcomp method:
+
+```{r}
+pr <- prcomp(USArrests, scale = TRUE)
+pr$rotation
+```
+
+```{r}
+es$vectors
+```
+
+We could press on and compute the data coefficients manually, but in the interest of time, we can just use `biplot` on the output from `prcomp`
+
+```{r}
+biplot(pr, scale = 0)
+```
+
 
 ## Meeting Videos {-}
 
