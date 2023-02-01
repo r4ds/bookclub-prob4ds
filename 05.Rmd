@@ -287,7 +287,7 @@ No need to even mess with the integrals.
 - PDF of the sum of two random variables ($Z=X+Y$) is given by the convolution:
 
 $$
-f_Z(z) = (f_X*f_Y)(z) = \int_{-\infty}^{\infty}f_X(x-y)f_Y(y)dt
+f_Z(z) = (f_X*f_Y)(z) = \int_{-\infty}^{\infty}f_X(z-y)f_Y(y)dt
 $$
 
    see text for details.
@@ -326,7 +326,6 @@ $$
 ... \\
 \mathbb{E}[X_N]
 \end{bmatrix}
-
 $$
 
 - For covariance, each variables has a variance, and there are covariances between all the possible pairs. These are organized into a convenient matrix $\mathbf{\Sigma}$:
@@ -445,7 +444,7 @@ This allows us to understand the multivariate Gaussian: the basis vectors are th
 
 ## Generating random variables {-}
 
-A procedure for generating random variables from a signle variable Guassian is typically available in any data science system (in `r` , we can use `rnorm`), but how can we generate a multivariate Gaussian? In `r` there are libraries (e.g. `MASS`) that can do this for you, but we now have the tools generate these directly from `rnorm`.  
+A procedure for generating random variables from a single variable Gaussian is typically available in any data science system (in `r` , we can use `rnorm`), but how can we generate a multivariate Gaussian? In `r` there are libraries (e.g. `MASS`) that can do this for you, but we now have the tools generate these directly from `rnorm`.  
 
 The ideas is to start with i.i.d. random normal variables arranged as vector $\mathbf{X}$ with mean zero and standard deviation 1.  The covariance matrix for this random vector is diagonal with all 1's along the diagonal.   Now  transform the variable:
 
@@ -507,7 +506,8 @@ Note there are some limitations of PCA:
 
 ## PCA example {-}
 
-Borrowed from Introduction to Statistical Learning, USArrests is a dataset that is part of base R. It contains arrests per 100,000 for four categories for each of the 50 states for 1973.
+Borrowed from Introduction to Statistical Learning, USArrests is a dataset that is part of base R. The dataset is for crime statistics for the 50 US states in 1973. It contains arrests per 100,000 for three categories of crime and also the percentage of urban population.  
+
 
 ```{r}
 states <- row.names(USArrests)
