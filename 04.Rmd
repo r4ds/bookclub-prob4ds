@@ -365,26 +365,13 @@ correctly define its inverse fuction $F^{-1}_X$.
 
 ### Cohort 1 {-}
 
-#### Chapter Overview {-}
-
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/8gaGFy9vJBY")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
-```
-</details>
-
-#### Exercises {-}
-
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
-
-<details>
-<summary> Meeting chat log </summary>
-
-```
-LOG
+00:00:52	Lucio Cornejo:	hello
+01:04:32	Lucio Cornejo:	https://bytepawn.com/beyond-the-central-limit-theorem.html
 ```
 </details>

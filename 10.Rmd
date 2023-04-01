@@ -13,26 +13,12 @@
 
 ### Cohort 1 {-}
 
-#### Chapter Overview {-}
-
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/KvlOpp-an-Q")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
-```
-</details>
-
-#### Exercises {-}
-
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
-
-<details>
-<summary> Meeting chat log </summary>
-
-```
-LOG
+00:05:40	Ron Legere:	https://cycling74.com/
 ```
 </details>

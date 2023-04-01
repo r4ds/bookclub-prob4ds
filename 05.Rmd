@@ -566,26 +566,4 @@ biplot(pr, scale = 0)
 
 ### Cohort 1 {-}
 
-#### Chapter Overview {-}
-
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
-
-<details>
-<summary> Meeting chat log </summary>
-
-```
-LOG
-```
-</details>
-
-#### Exercises {-}
-
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
-
-<details>
-<summary> Meeting chat log </summary>
-
-```
-LOG
-```
-</details>
+`r knitr::include_url("https://www.youtube.com/embed/7d5jyrXLIPo")`

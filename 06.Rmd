@@ -13,26 +13,13 @@
 
 ### Cohort 1 {-}
 
-#### Chapter Overview {-}
-
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/ZqbsSwevXfE")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
-```
-</details>
-
-#### Exercises {-}
-
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
-
-<details>
-<summary> Meeting chat log </summary>
-
-```
-LOG
+01:00:56	Ron: For future reading:
+https://en.wikipedia.org/wiki/Uniform_convergence_in_probability
 ```
 </details>
