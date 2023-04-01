@@ -386,24 +386,32 @@ monty_1 |>
 
 #### Chapter Overview {-}
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/jV_0_jRhr64")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:05:28	LUCIO ENRIQUE CORNEJO RAMÍREZ:	i will
+00:41:14	LUCIO ENRIQUE CORNEJO RAMÍREZ:	all good
+00:47:54	Jon Harmon (jonthegeek):	I like this explanation: https://www.youtube.com/watch?v=TVq2ivVpZgQ
+01:01:43	LUCIO ENRIQUE CORNEJO RAMÍREZ:	bye, thanks
 ```
 </details>
 
 #### Exercises {-}
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/0u9zFmdD_h4")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:02:35	LUCIO ENRIQUE CORNEJO RAM REZ:	helloo
+00:02:41	LUCIO ENRIQUE CORNEJO RAM REZ:	yes yes
+00:26:07	LUCIO ENRIQUE CORNEJO RAM REZ:	good so far
+00:31:29	LUCIO ENRIQUE CORNEJO RAM REZ:	i no longer trust the video solutions :(
+00:48:34	LUCIO ENRIQUE CORNEJO RAM REZ:	it was pretty clear.
+00:48:35	LUCIO ENRIQUE CORNEJO RAM REZ:	thanks
 ```
 </details>

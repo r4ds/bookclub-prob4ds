@@ -10,7 +10,7 @@ As we read, we are producing [notes about the book](https://r4ds.io/prob4ds).
 
 If you would like to present, please see the sign-up sheet for your cohort (linked below, and pinned in the [#book_club-prob4ds](https://rfordatascience.slack.com/archives/C049N9E33DH) channel on Slack)!
 
-- [Cohort 1](https://docs.google.com/spreadsheets/d/1NvIEzK5wpdzIJamoqMuw3ku_sosdXRRwYWmR9EJbSKc/edit?usp=sharing) (started 2022-11-30): [Wednesdays, 11:00 CST/CDT](https://www.timeanddate.com/worldclock/converter.html?iso=20221130T170000&p1=24&p2=1440) | [meeting videos](https://www.youtube.com/playlist?list=PL3x6DOfs2NGjY32EzPm1jd3s9xaRDWlM2)
+- Cohort 1 (started 2022-11-30, ended 2023-03-29): [meeting videos](https://www.youtube.com/playlist?list=PL3x6DOfs2NGjY32EzPm1jd3s9xaRDWlM2)
 
 <hr>
 

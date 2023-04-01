@@ -13,26 +13,13 @@
 
 ### Cohort 1 {-}
 
-#### Chapter Overview {-}
-
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/WI0kYZ5oF5M")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
-```
-</details>
-
-#### Exercises {-}
-
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
-
-<details>
-<summary> Meeting chat log </summary>
-
-```
-LOG
+00:05:09	Lucio Cornejo: https://strudel.tidalcycles.org/
+00:08:27	Ron: https://www.amazon.com/Structure-Recognizable-Diatonic-Tunings-Princeton/dp/0691610886
 ```
 </details>
