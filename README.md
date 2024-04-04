@@ -1,14 +1,14 @@
-# R4DS Introduction to Probability for Data Science Book Club
+# DSLC Introduction to Probability for Data Science Book Club
 
-Welcome to the R4DS Introduction to Probability for Data Science Book Club!
+Welcome to the DSLC Introduction to Probability for Data Science Book Club!
 
 We are working together to read [_Introduction to Probability for Data Science_](https://probability4datascience.com/) by Stanley H. Chan (Michigan Publishing, copyright 2021, [978-1-60785-746-4](https://www.amazon.com/Introduction-Probability-Data-Science-Stanley/dp/1607857464/)).
-Join the [#book_club-prob4ds](https://rfordatascience.slack.com/archives/C049N9E33DH) channel on the [R4DS Slack](https://r4ds.io/join) to participate.
-As we read, we are producing [notes about the book](https://r4ds.io/prob4ds).
+Join the [#book_club-prob4ds](https://dslcio.slack.com/archives/C049N9E33DH) channel on the [DSLC Slack](https://dslc.io/join) to participate.
+As we read, we are producing [notes about the book](https://dslc.io/prob4ds).
 
 ## Meeting Schedule
 
-If you would like to present, please see the sign-up sheet for your cohort (linked below, and pinned in the [#book_club-prob4ds](https://rfordatascience.slack.com/archives/C049N9E33DH) channel on Slack)!
+If you would like to present, please see the sign-up sheet for your cohort (linked below, and pinned in the [#book_club-prob4ds](https://dslcio.slack.com/archives/C049N9E33DH) channel on Slack)!
 
 - Cohort 1 (started 2022-11-30, ended 2023-03-29): [meeting videos](https://www.youtube.com/playlist?list=PL3x6DOfs2NGjY32EzPm1jd3s9xaRDWlM2)
 
@@ -39,4 +39,4 @@ Do these steps each time you present another chapter:
 10. When your PR has been accepted ("merged"), `usethis::pr_finish()` to close out your branch and prepare your local repository for future work.
 11. Now that your local copy is up-to-date with the main repo, you need to update your remote fork. Run `gert::git_push("origin")` or click the `Push` button on the `Git` tab of Rstudio.
 
-When your PR is checked into the main branch, the bookdown site will rebuild, adding your slides to [this site](https://r4ds.io/prob4ds).
+When your PR is checked into the main branch, the bookdown site will rebuild, adding your slides to [this site](https://dslc.io/prob4ds).
